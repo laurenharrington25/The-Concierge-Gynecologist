@@ -183,6 +183,7 @@ Behavior:
 - **Below 900px:** nav row collapses into a full-screen menu opened by the menu button.
 
 ### Inquire panel (modeled on md2.com)
+- **Dark Walnut sheet with Ivory Porcelain type**, matching the announcement bar and the logo (changed from cream on 15 Oct 2026, Lauren's request). Everything on it is ivory: eyebrow, title, lede, labels, field lines, focus state. Quieter text (the "(optional)" tag and the privacy note) runs translucent ivory, because taupe drops to ~2.4 : 1 on espresso. The submit button flips to ivory with espresso text. All of this is scoped to `.inquire-panel`, so the standalone `/inquire/` and `/stay-in-touch/` pages keep the light form.
 - Slides in from the right over a dimmed backdrop. It's a panel, not a page change. Opened by any element with `data-open-inquire`; closes on ✕, backdrop click, or `Esc`. Focus is trapped inside while open and returned afterward.
 - Every `data-open-inquire` element is a real link to `/inquire/`, so it still works without JavaScript. `/#inquire` on any URL also opens the panel.
 - **The two forms are separate and never appear together.** The panel has two modes and shows exactly one: `[data-open-inquire]` opens **Get in touch**, `[data-open-inquire="updates"]` opens **Subscribe**. Same rule on the pages: `/inquire/` carries only the inquiry form, `/stay-in-touch/` only the sign-up, each cross-linking to the other. (The URLs still read `/inquire/` and `/stay-in-touch/`; only the labels changed.)

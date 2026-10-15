@@ -1433,8 +1433,14 @@ ul, ol { padding: 0; }
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: clamp(56px, 7vw, 72px) clamp(24px, 4vw, 48px) 48px;
-  background: var(--cream);
-  color: var(--espresso);
+  /* Dark Walnut to match the announcement bar, with Ivory Porcelain type to
+     match the logo. The role tokens are re-pointed so the eyebrow and lede
+     follow; the form rules below swap their espresso/taupe for ivory. */
+  --color-text-soft: var(--ivory);
+  --color-accent: var(--ivory);
+  --color-line-strong: rgba(234, 231, 208, 0.4);
+  background: var(--espresso);
+  color: var(--ivory);
   transform: translateX(100%);
   transition: transform 0.5s var(--ease);
 }
@@ -1454,6 +1460,23 @@ ul, ol { padding: 0; }
 .inquire-panel .title { margin-top: 12px; font-size: clamp(2.25rem, 4vw, 3rem); }
 .inquire-panel .lede { margin: 8px 0 32px; }
 .inquire-panel__mode[hidden] { display: none; }
+
+/* Form colours on the dark sheet. Taupe falls to ~2.4:1 on espresso, so the
+   quiet text drops to a translucent ivory instead (still AA at its size). */
+.inquire-panel .field label { color: var(--ivory); }
+.inquire-panel .field__optional,
+.inquire-panel .form__note { color: rgba(234, 231, 208, 0.75); }
+.inquire-panel .field input:focus,
+.inquire-panel .field textarea:focus { border-color: var(--ivory); box-shadow: 0 1px 0 var(--ivory); }
+.inquire-panel .checkbox input { accent-color: var(--ivory); }
+.inquire-panel .button { background: var(--ivory); border-color: var(--ivory); color: var(--espresso); }
+.inquire-panel .button:hover { background: var(--blush); border-color: var(--blush); }
+/* Keep browser autofill from painting a light box with dark text */
+.inquire-panel .field input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ivory);
+  box-shadow: 0 0 0 1000px var(--espresso) inset;
+  caret-color: var(--ivory);
+}
 
 /* ── Footer ─────────────────────────────────────────────────────────────── */
 .site-footer {
