@@ -6,10 +6,12 @@
 /* ── Tokens ─────────────────────────────────────────────────────────────── */
 :root {
   /* Core palette */
-  --ivory: #fffffc;
-  --espresso: #1f1711;
+  --ivory: #eae7d0;      /* Ivory Porcelain */
+  --espresso: #322217;   /* Dark Walnut */
   --charcoal: #2d2929;
-  --taupe: #716862;
+  /* Darkened four steps from the brand's #716862: against Ivory Porcelain
+     that hex lands at 4.36:1, just under AA for label-sized text. */
+  --taupe: #6d645e;
   --stone: #887e76;
   --blush: #e8d2c6;
 
@@ -26,14 +28,15 @@
   --color-text: var(--espresso);
   --color-text-soft: var(--charcoal);
   --color-accent: var(--taupe);
-  --color-line: rgba(31, 23, 17, 0.14);
-  --color-line-strong: rgba(31, 23, 17, 0.3);
+  --color-line: rgba(50, 34, 23, 0.14);
+  --color-line-strong: rgba(50, 34, 23, 0.3);
 
   /* Type families */
   --font-title: "Instrument Serif", "Times New Roman", serif;
   --font-subtitle: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --font-heading: "Crimson Pro", Georgia, serif;
   --font-body: "Jost", "Helvetica Neue", Arial, sans-serif;
+  --font-geist: "Geist", "Helvetica Neue", Arial, sans-serif;
 
   /* Type scale (Title > Quote > Heading > Body > Subtitle) */
   --text-display: clamp(3rem, 7vw, 6rem);
@@ -61,6 +64,10 @@
 
   /* Motion */
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  /* Even through the middle, soft at both ends — for folds that should unroll */
+  /* Moves from the first frame and settles gently. An ease-in curve here read
+     as a flash: the row sat almost still for ~100ms, then rushed. */
+  --ease-fold: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --duration: 0.35s;
 }
 
@@ -254,7 +261,7 @@ ul, ol { padding: 0; }
 .button--light:hover { background: var(--blush); border-color: var(--blush); }
 
 /* Outlined button for use over photography or video */
-.button--ghost-light { background: transparent; border-color: rgba(255, 255, 252, 0.55); color: var(--ivory); }
+.button--ghost-light { background: transparent; border-color: rgba(234, 231, 208, 0.55); color: var(--ivory); }
 .button--ghost-light:hover { background: var(--ivory); border-color: var(--ivory); color: var(--espresso); }
 
 .button-row { display: flex; flex-wrap: wrap; gap: 12px 16px; margin-top: 36px; }
@@ -292,7 +299,7 @@ ul, ol { padding: 0; }
   left: 16px;
   bottom: 16px;
   padding: 6px 10px;
-  background: rgba(255, 255, 252, 0.8);
+  background: rgba(234, 231, 208, 0.8);
   color: var(--charcoal);
   font-family: var(--font-subtitle);
   font-weight: 600;
@@ -341,7 +348,7 @@ ul, ol { padding: 0; }
 .has-hero-media .site-header:not(.is-scrolled):not(.is-menu-open):not(:hover):not(:focus-within) {
   background: transparent;
   color: var(--ivory);
-  border-color: rgba(255, 255, 252, 0.22);
+  border-color: rgba(234, 231, 208, 0.22);
 }
 
 .site-header__top {
@@ -395,12 +402,57 @@ ul, ol { padding: 0; }
 .site-nav__link:hover::after,
 .site-nav__link[aria-current="page"]::after { transform: scaleX(1); }
 
+/* ── Logo ───────────────────────────────────────────────────────────────── */
+/* The supplied lockup is a stacked three-line wordmark with a tagline under it,
+   which goes illegible at header height — the "DR. LAUREN HARRINGTON, MD" line
+   would land around 5px. So the header pairs the petal mark alone with the type
+   wordmark, and the footer, which has the width for it, carries the full
+   lockup. Both are painted with `background: currentColor` through a mask, so
+   one asset serves the espresso-on-ivory and ivory-on-dark cases without a
+   second file — Asset 1 and Asset 2 are those two renderings. */
+/* The header wordmark is set to read as the logo's own lettering rather than
+   the site's Instrument Serif, but on one line — the artwork stacks it over
+   three. The logo's type is outlined in the SVG, so its actual face cannot be
+   read out of the file; Geist is the nearest thing already loaded. Swap
+   --font-geist here if the real one is ever supplied. */
 .wordmark {
-  font-family: var(--font-title);
-  font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-geist);
+  font-weight: 500;
+  /* The minimum stays where it was: at phone width the utility row has the menu
+     button and SUBSCRIBE either side of it, and a larger floor overflows. */
+  font-size: clamp(1.0625rem, 2.1vw, 1.75rem);
+  letter-spacing: -0.015em;
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+}
+.site-header .wordmark::before {
+  content: "";
+  flex: none;
+  width: 1.12em;
+  height: 1.05em;
+  background: currentColor;
+  -webkit-mask: url("/images/logos/mark.svg") center / contain no-repeat;
+  mask: url("/images/logos/mark.svg") center / contain no-repeat;
+}
+
+/* Full lockup in the footer. Guarded, because without mask support the block
+   would paint as a solid rectangle — unguarded, the type wordmark just stays. */
+@supports ((mask-image: url("/images/logos/main-logo.svg")) or (-webkit-mask-image: url("/images/logos/main-logo.svg"))) {
+  .wordmark--lockup {
+    display: block;
+    width: min(340px, 100%);
+    aspect-ratio: 749.91 / 235.47;
+    background: currentColor;
+    -webkit-mask: url("/images/logos/main-logo.svg") left center / contain no-repeat;
+    mask: url("/images/logos/main-logo.svg") left center / contain no-repeat;
+    /* keeps the words for screen readers and search engines */
+    text-indent: 110%;
+    overflow: hidden;
+  }
 }
 
 .site-nav {
@@ -450,6 +502,10 @@ ul, ol { padding: 0; }
      Subscribe. Get in touch is still in the menu, alongside it. */
   .utility-text,
   .utility-link:not(.utility-link--strong) { display: none; }
+  /* Geist runs longer than the serif this used to be set in, and the utility
+     row has the menu button and SUBSCRIBE either side of it. Left alone at the
+     desktop size it pushes the page into a horizontal scroll. */
+  .wordmark { font-size: clamp(1rem, 2.4vw, 1.25rem); }
   .wordmark { font-size: 1.1875rem; }
 
   .site-nav {
@@ -528,10 +584,10 @@ ul, ol { padding: 0; }
   z-index: 3;
   pointer-events: none;
   background: linear-gradient(to bottom,
-    rgba(31, 23, 17, 0.45) 0%,
-    rgba(31, 23, 17, 0) 30%,
-    rgba(31, 23, 17, 0) 55%,
-    rgba(31, 23, 17, 0.55) 100%);
+    rgba(50, 34, 23, 0.45) 0%,
+    rgba(50, 34, 23, 0) 30%,
+    rgba(50, 34, 23, 0) 55%,
+    rgba(50, 34, 23, 0.55) 100%);
 }
 
 .motion-toggle {
@@ -543,13 +599,13 @@ ul, ol { padding: 0; }
   place-items: center;
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(255, 255, 252, 0.5);
+  border: 1px solid rgba(234, 231, 208, 0.5);
   border-radius: 50%;
-  background: rgba(31, 23, 17, 0.3);
+  background: rgba(50, 34, 23, 0.3);
   color: var(--ivory);
   transition: background-color var(--duration) var(--ease);
 }
-.motion-toggle:hover { background: rgba(31, 23, 17, 0.55); }
+.motion-toggle:hover { background: rgba(50, 34, 23, 0.55); }
 .motion-toggle--inline {
   position: static;
   border-color: var(--color-line-strong);
@@ -622,10 +678,10 @@ ul, ol { padding: 0; }
   position: absolute;
   inset: 0;
   background: linear-gradient(to right,
-    rgba(255, 255, 252, 0) 0%,
-    rgba(255, 255, 252, 0.28) 30%,
-    rgba(255, 255, 252, 0.7) 52%,
-    rgba(255, 255, 252, 0.86) 100%);
+    rgba(234, 231, 208, 0) 0%,
+    rgba(234, 231, 208, 0.28) 30%,
+    rgba(234, 231, 208, 0.7) 52%,
+    rgba(234, 231, 208, 0.86) 100%);
 }
 /* Hold the left edge so the rosehips stay in frame as the band is cropped */
 .membership__bg { object-position: left center; }
@@ -636,9 +692,9 @@ ul, ol { padding: 0; }
      so the branch is in frame rather than the blank canvas. */
   .membership::after {
     background: linear-gradient(to bottom,
-      rgba(255, 255, 252, 0.34) 0%,
-      rgba(255, 255, 252, 0.78) 34%,
-      rgba(255, 255, 252, 0.86) 100%);
+      rgba(234, 231, 208, 0.34) 0%,
+      rgba(234, 231, 208, 0.78) 34%,
+      rgba(234, 231, 208, 0.86) 100%);
   }
   .membership__bg { object-position: 12% center; }
   .membership__inner { max-width: none; margin-left: 0; }
@@ -646,26 +702,40 @@ ul, ol { padding: 0; }
 }
 
 /* ── Home: membership list ──────────────────────────────────────────────── */
-/* Tracked caps at display size, set in Jost rather than the Instrument Sans
-   used by .text-link and .eyebrow. */
+/* Geist, sentence case — the only place the site uses this face. */
 .membership-lead {
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
-  line-height: 1.45;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-family: var(--font-geist);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 1.9vw, 1.625rem);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 .navigate-list {
   margin-top: clamp(28px, 3vw, 40px);
   list-style: none;
 }
+/* Geist Bold, not the Instrument Serif this list used to carry: the serif
+   ships in one weight, so asking it for bold would only get a synthesised
+   one, which smears a face with this much stroke contrast. */
 .navigate-list li {
   padding-block: clamp(14px, 1.6vw, 20px);
   border-bottom: 1px solid var(--color-line-strong);
-  font-family: var(--font-title);
-  font-size: clamp(1.75rem, 3vw, 2.625rem);
-  line-height: 1.15;
+  font-family: var(--font-geist);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 2.125rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.navigate-list a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease), transform var(--duration) var(--ease);
+}
+.navigate-list a:hover { color: var(--taupe); transform: translateX(6px); }
+@media (prefers-reduced-motion: reduce) {
+  .navigate-list a { transition: color var(--duration) var(--ease); }
+  .navigate-list a:hover { transform: none; }
 }
 .navigate-list li:first-child { padding-top: 0; }
 .navigate-list li:last-child { border-bottom: 0; }
@@ -772,9 +842,9 @@ ul, ol { padding: 0; }
   position: absolute;
   inset: 0;
   background: linear-gradient(to right,
-    rgba(255, 255, 252, 0.42) 0%,
-    rgba(255, 255, 252, 0.28) 48%,
-    rgba(255, 255, 252, 0) 72%);
+    rgba(234, 231, 208, 0.42) 0%,
+    rgba(234, 231, 208, 0.28) 48%,
+    rgba(234, 231, 208, 0) 72%);
 }
 .feature-band__inner { max-width: 760px; }
 @media (max-width: 900px) {
@@ -783,9 +853,9 @@ ul, ol { padding: 0; }
   .feature-band__bg { object-position: 18% center; }
   .feature-band::after {
     background: linear-gradient(to bottom,
-      rgba(255, 255, 252, 0.74) 0%,
-      rgba(255, 255, 252, 0.88) 36%,
-      rgba(255, 255, 252, 0.88) 100%);
+      rgba(234, 231, 208, 0.74) 0%,
+      rgba(234, 231, 208, 0.88) 36%,
+      rgba(234, 231, 208, 0.88) 100%);
   }
 }
 .feature-band__inner .lede { margin-top: 24px; }
@@ -800,6 +870,12 @@ ul, ol { padding: 0; }
    past what espresso text needs for AA. */
 .cta-band {
   --color-accent: var(--charcoal);
+  display: grid;
+  align-items: center;
+  /* Taller than it needs to be for the copy, so more of the photograph shows.
+     `cover` can only ever display the full width of an image, so the one lever
+     on how much of this one is visible is how tall the band is. */
+  min-height: clamp(460px, 56vh, 660px);
   background: var(--cream);
   color: var(--espresso);
 }
@@ -807,9 +883,13 @@ ul, ol { padding: 0; }
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 252, 0.42);
+  background: rgba(234, 231, 208, 0.42);
 }
 .cta-band .section-intro { margin-bottom: 0; }
+/* In Their Words wants its photograph further back than the other two bands.
+   Raising the wash only helps contrast, so there is no floor to check here —
+   the floor matters when lightening it (0.34 for this frame). */
+.page-in-their-words .cta-band::after { background: rgba(234, 231, 208, 0.62); }
 
 /* ── Home: reviews carousel ─────────────────────────────────────────────── */
 .reviews { text-align: center; }
@@ -889,12 +969,36 @@ ul, ol { padding: 0; }
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom,
-    rgba(31, 23, 17, 0.62) 0%,
-    rgba(31, 23, 17, 0.42) 45%,
-    rgba(31, 23, 17, 0.58) 100%);
+    rgba(50, 34, 23, 0.62) 0%,
+    rgba(50, 34, 23, 0.42) 45%,
+    rgba(50, 34, 23, 0.58) 100%);
 }
 .page-hero--media > .container { position: relative; z-index: 1; width: 100%; }
-.page-hero--media .lede { color: rgba(255, 255, 252, 0.88); }
+
+/* Scroll cue at the foot of every full-screen header. Ivory Porcelain on the
+   scrim, 44px tap target, and the destination carries scroll-margin-top so it
+   does not land under the sticky header. */
+.page-hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(24px, 4vh, 44px);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  color: var(--ivory);
+  transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
+}
+.page-hero__scroll svg { width: 14px; height: 20px; }
+.page-hero__scroll:hover { transform: translateY(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .page-hero__scroll { transition: none; }
+  .page-hero__scroll:hover { transform: none; }
+}
+#areas, #answers, #reviews, #form { scroll-margin-top: calc(var(--header-h) + 24px); }
+.page-hero--media .lede { color: rgba(234, 231, 208, 0.88); }
 
 /* ── Care model ─────────────────────────────────────────────────────────── */
 .steps {
@@ -957,6 +1061,7 @@ ul, ol { padding: 0; }
 
 .credentials { padding-bottom: var(--section-space); }
 .credential-group {
+  interpolate-size: allow-keywords;
   border-top: 1px solid var(--color-line-strong);
 }
 .credential-group:last-child { border-bottom: 1px solid var(--color-line-strong); }
@@ -1001,13 +1106,28 @@ ul, ol { padding: 0; }
 }
 .credential-group__body .credential-list { grid-column: 2; }
 
-/* Rows open in one frame, deliberately. Animating the fold leaves the content
-   clipped part-way for a few frames, and the clip edge lands wherever it lands
-   — including through a line of text, with the next row's border directly
-   beneath it, which reads as a rule struck across the words. Nothing can be
-   mistimed if nothing animates. The plus/minus still turns, so the control
-   does not feel dead. */
-.credential-group::details-content { overflow: hidden; }
+/* The fold is animated and the content is fully rendered from the first frame.
+   Two earlier attempts both produced a flash, and for the same underlying
+   reason — something kept the content invisible while the box was already
+   growing, so it appeared to pop in part-way:
+     - transitioning `content-visibility ... allow-discrete` (the usual recipe)
+       left it unrendered for the first stretch of the open;
+     - masking the bottom 28px of the clipped box hid *everything* until the box
+       was taller than 28px, which on a slow ease-in is a few hundred ms.
+   So neither is used. The box just grows, slowly enough (0.75s) that the row's
+   own text and the next row's border separate smoothly as it goes. */
+.credential-group::details-content {
+  block-size: 0;
+  overflow: hidden;
+  /* Slower and more even than --ease, which is front-loaded: this one starts
+     gently so the row unfolds rather than springing.
+     `content-visibility` is deliberately NOT transitioned. Including it — the
+     usual recipe — meant the content stayed unrendered for the first stretch of
+     the open, so the box grew empty and the text popped in part-way: a flash.
+     Left alone it renders from the first frame and the fold simply reveals it. */
+  transition: block-size 0.75s var(--ease-fold);
+}
+.credential-group[open]::details-content { block-size: auto; }
 .credential-list { list-style: none; }
 .credential-list li {
   display: flex;
@@ -1044,6 +1164,7 @@ ul, ol { padding: 0; }
 .topic__list { margin-top: clamp(36px, 4vw, 52px); }
 
 .disclosure {
+  interpolate-size: allow-keywords;
   border-top: 1px solid var(--color-line-strong);
   /* Deep links land under the sticky header without this */
   scroll-margin-top: calc(var(--header-h) + 24px);
@@ -1077,27 +1198,40 @@ ul, ol { padding: 0; }
 }
 .disclosure__body > * + * { margin-top: 1em; }
 
-/* Opens in one frame — see the note on .credential-group::details-content */
-.disclosure::details-content { overflow: hidden; }
+/* Masked, animated fold — see the note on .credential-group::details-content */
+.disclosure::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 0.75s var(--ease-fold);
+}
+.disclosure[open]::details-content { block-size: auto; }
 
 /* ── In Their Words: closing quote band ─────────────────────────────────── */
 /* Pale wall over foliage, so the scrim has to hold the whole frame as the
    parallax travels — a fixed wash rather than a directional gradient. */
 .quote-band {
   --color-accent: var(--blush);
+  display: grid;
+  align-items: center;
+  /* Taller than the quote needs, for the same reason as .cta-band: `cover`
+     only ever shows an image's full width, so the band's height is the one
+     lever on how much of the photograph is visible. */
+  min-height: clamp(520px, 64vh, 760px);
   color: var(--ivory);
   background: var(--espresso);
   text-align: center;
 }
 .quote-band__bg { object-position: center center; }
-/* 0.78 is not a taste call: the brightest pixels in this frame sit near
-   sRGB 213, and ivory text needs the composite at or under ~0.18 relative
-   luminance to clear AA. Lighten it and the caption fails. */
+/* 0.84 is not a taste call. Two photographs share this band: the foliage on
+   Q&A peaks near sRGB 213 and the dusk sky on Expertise near 216, and ivory
+   text needs the composite at or under ~0.14 relative luminance to clear AA
+   against the brighter of them. Lighten it and the small caption fails first.
+   Recompute if either photograph is swapped. */
 .quote-band::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(31, 23, 17, 0.78);
+  background: rgba(50, 34, 23, 0.84);
 }
 /* Light variant. The linen behind it bottoms out near sRGB 83, which a 0.38
    ivory wash lifts to roughly 0.40 relative luminance — espresso text lands at
@@ -1109,7 +1243,7 @@ ul, ol { padding: 0; }
   color: var(--espresso);
   background: var(--cream);
 }
-.quote-band--light::after { background: rgba(255, 255, 252, 0.38); }
+.quote-band--light::after { background: rgba(234, 231, 208, 0.38); }
 .quote-band--light .quote-band__inner figcaption { color: var(--color-accent); }
 
 .quote-band__inner { max-width: 22em; margin-inline: auto; }
@@ -1161,12 +1295,27 @@ ul, ol { padding: 0; }
 /* A px measure, not em: the quote mark is set at 2.75rem, so an em value here
    would resolve to a different width for it than for the review text and the
    two would not line up. */
-.reviews--full .reviews__item > * { max-width: 820px; margin-inline: auto; }
+.reviews--full .reviews__item > * { max-width: 880px; margin-inline: auto; }
 .reviews--full .reviews__item blockquote p {
-  font-size: clamp(1.25rem, 1.9vw, 1.625rem);
-  line-height: 1.65;
+  font-size: clamp(1.375rem, 2.3vw, 2rem);
+  line-height: 1.55;
 }
-.reviews--full .testimonial__mark { height: auto; margin-bottom: 4px; font-size: 2.75rem; }
+/* The glyph sits high in its em box, so at this size the line box leaves a
+   large well of empty space under it. Tight line-height plus a negative margin
+   pulls the first line of the review back up to it. */
+.reviews--full .testimonial__mark {
+  height: auto;
+  margin-bottom: -0.42em;
+  font-size: 8.25rem;
+  line-height: 0.62;
+}
+/* Closing mark, set against the right edge of the same column so the review
+   sits between the two of them. */
+.testimonial__mark--close {
+  margin-top: -0.05em;
+  margin-bottom: 0;
+  text-align: right;
+}
 .reviews--full .reviews__controls { margin-top: 56px; }
 
 /* ── In Their Words ─────────────────────────────────────────────────────── */
@@ -1269,7 +1418,7 @@ ul, ol { padding: 0; }
 .inquire-panel__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(31, 23, 17, 0.42);
+  background: rgba(50, 34, 23, 0.42);
   opacity: 0;
   transition: opacity 0.5s var(--ease);
 }
@@ -1310,20 +1459,20 @@ ul, ol { padding: 0; }
 .site-footer {
   --color-accent: var(--blush);
   padding-block: clamp(64px, 8vw, 96px) 32px;
-  background: var(--charcoal);
+  /* Dark Walnut rather than charcoal: the footer is the brand brown now. */
+  background: var(--espresso);
   color: var(--ivory);
 }
 .site-footer__grid {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 48px;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 48px clamp(56px, 8vw, 120px);
 }
 .site-footer .wordmark { font-size: 2rem; }
-.site-footer__place { margin-top: 14px; font-size: var(--text-small); color: rgba(255, 255, 252, 0.88); }
-.site-footer__tagline { max-width: 30em; margin-top: 12px; font-size: var(--text-small); color: rgba(255, 255, 252, 0.72); }
+.site-footer__tagline { max-width: 26em; margin-top: 18px; font-size: var(--text-small); color: rgba(234, 231, 208, 0.72); }
 .site-footer .eyebrow { margin-bottom: 16px; }
 .site-footer__list { display: grid; gap: 8px; list-style: none; font-size: var(--text-small); }
-.site-footer__list a { text-decoration: none; color: rgba(255, 255, 252, 0.85); }
+.site-footer__list a { text-decoration: none; color: rgba(234, 231, 208, 0.85); }
 .site-footer__list a:hover { color: var(--ivory); text-decoration: underline; text-underline-offset: 4px; }
 .site-footer__legal {
   display: flex;
@@ -1332,9 +1481,20 @@ ul, ol { padding: 0; }
   gap: 12px 32px;
   margin-top: 64px;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 252, 0.16);
+  border-top: 1px solid rgba(234, 231, 208, 0.16);
   font-size: 0.8125rem;
-  color: rgba(255, 255, 252, 0.6);
+  color: rgba(234, 231, 208, 0.6);
+}
+
+/* Narrower still: the name will not fit beside the menu button and SUBSCRIBE at
+   any size worth reading, so the header carries the mark alone. The words stay
+   for screen readers, and the full lockup is in the footer. */
+@media (max-width: 640px) {
+  .site-header .wordmark {
+    gap: 0;
+    font-size: 0;
+  }
+  .site-header .wordmark::before { width: 30px; height: 28px; }
 }
 
 @media (max-width: 760px) {

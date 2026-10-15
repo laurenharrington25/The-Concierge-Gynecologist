@@ -7,7 +7,7 @@
   <title>Expertise — The Concierge Gynecologist</title>
   <meta name="description" content="Perimenopause and menopause care, sexual health, cancer survivorship, previvor surveillance, contraception, and in-office gynecologic procedures with Dr. Lauren Harrington in Denver.">
   <link rel="canonical" href="https://theconciergegynecologist.com/expertise/">
-  <meta name="theme-color" content="#fffffc">
+  <meta name="theme-color" content="#eae7d0">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
   <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500&family=Instrument+Sans:wght@600&family=Instrument+Serif:ital@0;1&family=Jost:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500&family=Geist:wght@400;500;700&family=Instrument+Sans:wght@600&family=Instrument+Serif:ital@0;1&family=Jost:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="/styles.css">
   <script defer src="/script.js"></script>
 </head>
@@ -42,7 +42,6 @@
       <span class="utility-text">Denver Metro Area</span>
     </div>
 
-    <!-- TODO: replace text wordmark with logo SVG when provided -->
     <a class="wordmark" href="/">The Concierge Gynecologist</a>
 
     <div class="site-header__utility site-header__utility--right">
@@ -69,19 +68,23 @@
 
 <main id="main">
   <section class="page-hero page-hero--media">
-    <img class="page-hero__bg" src="/images/page-heroes/expertise.jpg" alt="" width="2400" height="1200" fetchpriority="high">
+    <img class="page-hero__bg" src="/images/page-heroes/expertise.jpg" alt="" width="3100" height="1200" fetchpriority="high">
     <div class="container">
       <div class="page-hero__inner">
         <p class="eyebrow">Expertise</p>
         <h1 class="title">Personalized gynecology care for every stage of life.</h1>
       </div>
     </div>
+      <a class="page-hero__scroll" href="#areas">
+        <span class="visually-hidden">Skip to the list of areas</span>
+        <svg viewBox="0 0 14 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 1v17M1.5 12.5 7 18l5.5-5.5"/></svg>
+      </a>
   </section>
 
   <!-- Descriptions are Dr. Harrington's own words — quote them verbatim and
        don't paraphrase. Each row keeps its id so /expertise/#<id> still deep
        links; script.js opens the matching row on load. -->
-  <section class="section section--tight-top" aria-labelledby="hormonal-health-title">
+  <section class="section section--tight-top" aria-labelledby="hormonal-health-title" id="areas">
     <div class="container">
       <div class="topic">
         <h2 class="title" id="hormonal-health-title">Hormonal health</h2>
@@ -227,19 +230,17 @@
     </div>
   </section>
 
-  <section class="section section--cream">
+  <!-- Founder's statement. Set in Jost rather than the italic Quote role: at
+       this length, centred italic serif was hard to read. -->
+  <section class="section quote-band" data-parallax aria-label="From Dr. Harrington">
+    <img class="quote-band__bg" data-parallax-layer src="/images/sections/founder-quote.jpg" alt="" width="1500" height="2000" loading="lazy">
     <div class="container">
-      <div class="section-intro section-intro--center">
-        <p class="eyebrow">On-site care</p>
-        <h2 class="title">Seen where you already receive care</h2>
-        <div class="prose">
-          <p>Dr. Harrington provides gynecologic care, consultations, and select procedural services on-site at partnering concierge primary care practices across the Denver metro area.</p>
-        </div>
-        <div class="button-row">
-          <a class="button" href="/inquire/" data-open-inquire>Get in touch</a>
-          <a class="text-link" href="/questions/">Common questions</a>
-        </div>
-      </div>
+      <figure class="quote-band__inner quote-band__inner--wide">
+        <blockquote>
+          <p class="quote-band__text">“The existing healthcare system is failing. Patients often leave feeling unheard and without lasting relief. Providers do not have the time or the tools to meaningfully help. I built this practice to close these gaps: evidence-based care delivered with the time, attention, and warmth patients deserve.”</p>
+        </blockquote>
+        <figcaption class="eyebrow">Dr. Harrington</figcaption>
+      </figure>
     </div>
   </section>
 </main>
@@ -248,9 +249,8 @@
 <footer class="site-footer">
   <div class="container site-footer__grid">
     <div>
-      <a class="wordmark" href="/">The Concierge Gynecologist</a>
-      <p class="site-footer__place">Denver, Colorado</p>
-      <p class="site-footer__tagline">Boutique gynecology care from Lauren Harrington, MD, delivered on-site at partnering concierge primary care practices across the Denver metro area.</p>
+      <a class="wordmark wordmark--lockup" href="/">The Concierge Gynecologist</a>
+      <p class="site-footer__tagline">A membership-based gynecology practice in Denver, Colorado providing specialized care for women in hormonal transitions.</p>
     </div>
     <nav aria-label="Footer">
       <p class="eyebrow">Explore</p>
@@ -336,7 +336,7 @@
 
     <section class="inquire-panel__mode" data-panel-mode="updates" hidden>
       <p class="eyebrow">Subscribe</p>
-      <h2 class="title" id="panel-updates-title">Want to know more</h2>
+      <h2 class="title" id="panel-updates-title">Want to know more?</h2>
       <p class="lede">Subscribe to Dr. Harrington’s newsletter for information about how to become a patient, announcements about new practice locations, and current news in hormone health.</p>
 
       <form class="form" name="updates" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-form data-success="You’re on the list. Thank you.">
