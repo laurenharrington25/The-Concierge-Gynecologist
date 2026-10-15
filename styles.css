@@ -1474,6 +1474,25 @@ ul, ol { padding: 0; }
 .site-footer__list { display: grid; gap: 8px; list-style: none; font-size: var(--text-small); }
 .site-footer__list a { text-decoration: none; color: rgba(234, 231, 208, 0.85); }
 .site-footer__list a:hover { color: var(--ivory); text-decoration: underline; text-underline-offset: 4px; }
+/* Social marks. 44px targets, so the icon can stay small without the tap area
+   doing the same; the negative inset keeps them optically aligned with the
+   links above rather than indented by their own padding. */
+.site-footer__social {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0 0 -10px;
+  list-style: none;
+}
+.site-footer__social a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: rgba(234, 231, 208, 0.85);
+  transition: color var(--duration) var(--ease);
+}
+.site-footer__social a:hover { color: var(--ivory); }
+.site-footer__social svg { width: 19px; height: 19px; }
 .site-footer__legal {
   display: flex;
   flex-wrap: wrap;
