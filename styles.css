@@ -323,6 +323,9 @@ ul, ol { padding: 0; }
   color: var(--ivory);
   font-size: 0.75rem;
   line-height: 1.5;
+  /* Caps in CSS, not the markup, so screen readers read words, not letters */
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-align: center;
   text-wrap: balance;
 }
@@ -706,7 +709,8 @@ ul, ol { padding: 0; }
 .membership-lead {
   font-family: var(--font-geist);
   font-weight: 400;
-  font-size: clamp(1.25rem, 1.9vw, 1.625rem);
+  /* 20px on a phone, 24px on a computer — Lauren, 15 Oct 2026 */
+  font-size: clamp(1.25rem, 1.9vw, 1.5rem);
   line-height: 1.4;
   letter-spacing: -0.01em;
 }
