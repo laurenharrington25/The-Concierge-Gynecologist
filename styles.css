@@ -58,8 +58,8 @@
   --radius: 4px;
 
   --announce-h: 44px;
-  --header-top-h: 76px;
-  --header-nav-h: 48px;
+  --header-top-h: 72px;
+  --header-nav-h: 36px;
   --header-h: calc(var(--header-top-h) + var(--header-nav-h));
 
   /* Motion */
