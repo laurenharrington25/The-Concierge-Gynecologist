@@ -673,6 +673,8 @@ ul, ol { padding: 0; }
   --color-accent: var(--charcoal);
   color: var(--espresso);
   background: var(--cream);
+  /* Tighter top than the standard section — Lauren, 15 Oct 2026 */
+  padding-top: clamp(40px, 4.5vw, 64px);
 }
 /* The photograph is open on the right; this wash sits over it so the copy
    clears AA no matter which part of the frame the parallax brings up. */
@@ -701,18 +703,19 @@ ul, ol { padding: 0; }
   }
   .membership__bg { object-position: 12% center; }
   .membership__inner { max-width: none; margin-left: 0; }
-  .membership { padding-top: clamp(140px, 30vw, 200px); }
+  .membership { padding-top: clamp(56px, 13vw, 88px); }
 }
 
 /* ── Home: membership list ──────────────────────────────────────────────── */
-/* Geist, sentence case — the only place the site uses this face. */
+/* Same face, weight, tracking and caps as the .text-link beneath the list
+   ("Areas of expertise →"), 2pt (~2.67px) larger — Lauren, 15 Oct 2026 */
 .membership-lead {
-  font-family: var(--font-geist);
-  font-weight: 400;
-  /* 20px on a phone, 24px on a computer — Lauren, 15 Oct 2026 */
-  font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+  font-family: var(--font-subtitle);
+  font-weight: 600;
+  font-size: 0.9167rem;
   line-height: 1.4;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 .navigate-list {
   margin-top: clamp(28px, 3vw, 40px);
@@ -863,7 +866,9 @@ ul, ol { padding: 0; }
   }
 }
 .feature-band__inner .lede { margin-top: 24px; }
-/* The first block is broken by hand into three lines; keep those breaks from
+/* Opening lines run 2.5px above the paragraph beneath at every width */
+.feature-band__inner .feature-band__intro { font-size: calc(var(--text-lede) + 0.15625rem); }
+/* The first block is broken by hand into two lines; keep those breaks from
    producing orphans once the column is narrower than the sentences. */
 @media (max-width: 640px) {
   .feature-band__inner .lede br { display: none; }
