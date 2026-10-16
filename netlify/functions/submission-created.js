@@ -41,7 +41,6 @@ exports.handler = async (event) => {
       <p style="margin-top:28px">Warmly,<br>Lauren Harrington, MD</p>
       <p style="font-size:12px;color:#716862;margin-top:32px">
         This message is for general information and is not medical advice.
-        In an emergency, call 911.
       </p>
     </div>`;
 
