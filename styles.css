@@ -1320,21 +1320,38 @@ ul, ol { padding: 0; }
 .quote-band--light .quote-band__inner figcaption { color: var(--color-accent); }
 
 .quote-band__inner { max-width: 22em; margin-inline: auto; }
-/* In px, not em: the measure has to hold as the quote's own size changes. */
-.quote-band__inner--wide { max-width: 880px; }
-/* Body face, roman, generous leading. The Quote role (Instrument Serif Italic)
-   is right for a one-line pull quote; across five sentences it stopped being
-   readable, which is the whole job of this block. */
+/* Founder's statement (Q&A). Ranged left in the left half of the band so the
+   string lights on the right of the photograph stay clear of the words
+   (Lauren, 20 Oct 2026). In px, not em: the measure has to hold as the
+   quote's own size changes. */
+.quote-band__inner--wide {
+  /* 720px, but never past ~62% of the screen: on narrower laptops the lights
+     sit further left in the frame and a full 720px reached the second bulb. */
+  max-width: min(720px, 62vw);
+  margin-inline: 0 auto;
+  text-align: left;
+}
+/* Instrument Serif Regular — not the italic Quote role, which across five
+   sentences stopped being readable. A size up from the Jost it replaced,
+   because the serif's smaller x-height reads smaller at the same setting. */
 .quote-band__text {
-  font-family: var(--font-body);
-  font-size: clamp(1.25rem, 2vw, 1.75rem);
-  line-height: 1.6;
+  font-family: var(--font-title);
+  font-size: clamp(1.875rem, 3vw, 2.625rem); /* nudged up twice, 20 Oct 2026 */
+  line-height: 1.35;
   text-wrap: pretty;
 }
 .quote-band__inner .title { font-size: clamp(2rem, 3.6vw, 3.25rem); line-height: 1.12; text-wrap: balance; }
 /* Ivory rather than the section's blush accent — blush does not clear AA
    against the brightest part of this frame at small sizes. */
 .quote-band__inner figcaption { margin-top: 28px; color: var(--ivory); }
+/* Founder's statement: the attribution sits at the right end of its column,
+   under the close of the quote (Lauren, 20 Oct 2026). */
+.quote-band__inner--wide figcaption { margin-top: 14px; padding-right: 48px; text-align: right; }
+/* A phone column is full width: no lights to dodge, and no room to give up. */
+@media (max-width: 900px) {
+  .quote-band__inner--wide { max-width: none; }
+  .quote-band__inner--wide figcaption { padding-right: 16px; }
+}
 .quote-band__inner .button-row { justify-content: center; margin-top: clamp(36px, 5vw, 56px); }
 
 /* ── In Their Words: full reviews carousel ─────────────────────────────── */
