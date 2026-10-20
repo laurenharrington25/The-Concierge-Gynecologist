@@ -259,8 +259,9 @@
   });
 
   // ── Hover-opening disclosures ───────────────────────────────────────────
-  // On a list marked [data-hover-open], moving the pointer over a row previews
-  // its description and leaving closes it again. Clicking (or Enter, which
+  // On a list marked [data-hover-open], resting the pointer on a row previews
+  // its description; it closes when another row opens or the pointer leaves
+  // the list. Clicking (or Enter, which
   // fires a click on a <summary>) pins it open so it survives the pointer
   // leaving; clicking again closes it. Only on devices that actually hover —
   // a touch device keeps the plain tap behaviour, because a hover it cannot
@@ -271,41 +272,135 @@
   // dismissible (Esc) and persistent (it stays while the pointer is inside).
   const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
 
-  document.querySelectorAll('[data-hover-open]').forEach((list) => {
-    list.querySelectorAll('details').forEach((row) => {
-      const summary = row.querySelector('summary');
-      let pinned = null;   // null = follow the pointer, true = held open, false = held shut
-      let inside = false;
+  // Hover intent. A row opens only when the mouse has actually moved onto it
+  // and then rested for INTENT_MS — not merely because a scroll slid it under
+  // a still cursor. Opening on bare pointerenter turned every scroll through
+  // the list into a string of rows popping open, and the hold below then
+  // fought the scroll, so the page felt stuck (Lauren, 19 Oct 2026).
+  const INTENT_MS = 250;
+  const FOLD_MS = 800; // the 0.75s fold in styles.css, plus a frame of slack
 
-      const sync = () => { row.open = pinned === null ? inside : pinned; };
+  // When the reader last scrolled on purpose. Our own scrollBy calls also fire
+  // `scroll`, so listen for the inputs that start a scroll instead.
+  let lastUserScroll = -Infinity;
+  const noteScroll = () => { lastUserScroll = performance.now(); };
+  addEventListener('wheel', noteScroll, { passive: true });
+  addEventListener('touchmove', noteScroll, { passive: true });
+  addEventListener('keydown', (event) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) noteScroll();
+  });
+
+  // Where the pointer last was on screen. A scroll slides the page under a
+  // still pointer and the browser reports a pointermove at the same spot, so
+  // an unchanged position means the page moved, not the mouse. (movementX/Y
+  // would say the same, but some browsers and input paths leave them at 0.)
+  let lastX = NaN;
+  let lastY = NaN;
+  addEventListener('pointermove', (event) => {
+    event.pointerMoved = event.clientX !== lastX || event.clientY !== lastY;
+    lastX = event.clientX;
+    lastY = event.clientY;
+  }, { capture: true, passive: true });
+
+  // Moving down a hover list, the row being left folds shut above the row
+  // being opened, which would slide that row up and out from under the
+  // pointer. Hold it where it was instead: for the length of the fold, scroll
+  // by however far it has drifted, so its panel unrolls beneath the cursor.
+  // The moment the reader scrolls, let go — never fight a scroll.
+  // It runs until the row has stopped drifting rather than for a fixed time:
+  // the fold is a transition on ::details-content, which reports no events
+  // and no Animation objects, and a busy or throttled page can run it late.
+  const SETTLE_MS = 200;    // no drift for this long after the fold = done
+  const HOLD_CAP_MS = 2500; // never hold longer than this
+  const holdInPlace = (row) => {
+    const startTop = row.getBoundingClientRect().top;
+    const started = performance.now();
+    let lastDrift = started;
+    const step = () => {
+      if (lastUserScroll > started) return;
+      const now = performance.now();
+      const drift = row.getBoundingClientRect().top - startTop;
+      if (Math.abs(drift) >= 0.5) {
+        window.scrollBy({ top: drift, behavior: 'instant' });
+        lastDrift = now;
+      }
+      const settled = now > started + FOLD_MS && now > lastDrift + SETTLE_MS;
+      if (!settled && now < started + HOLD_CAP_MS) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  document.querySelectorAll('[data-hover-open]').forEach((list) => {
+    const rows = [...list.querySelectorAll('details')];
+    // pinned: null = follow the pointer, true = held open, false = held shut
+    const pinnedState = new Map(rows.map((row) => [row, null]));
+    // The row open because the pointer rested on it. It stays open until
+    // another row takes over or the pointer leaves the list, so nothing shifts
+    // while the pointer crosses from one row to the next.
+    let previewing = null;
+    let timer = 0;
+    let timerRow = null;
+
+    const apply = (row) => {
+      const pinned = pinnedState.get(row);
+      row.open = pinned === null ? previewing === row : pinned;
+    };
+    const cancel = () => { clearTimeout(timer); timer = 0; timerRow = null; };
+    const preview = (row) => {
+      const previous = previewing;
+      previewing = row;
+      if (previous && previous !== row) apply(previous);
+      if (row) { apply(row); holdInPlace(row); }
+    };
+
+    rows.forEach((row) => {
+      const summary = row.querySelector('summary');
 
       summary.addEventListener('click', (event) => {
         if (!finePointer.matches) return; // touch: let <details> do its own thing
         event.preventDefault();
-        pinned = pinned === true ? false : true;
-        sync();
+        cancel();
+        pinnedState.set(row, pinnedState.get(row) === true ? false : true);
+        if (previewing === row) previewing = null;
+        apply(row);
       });
 
-      row.addEventListener('pointerenter', (event) => {
+      row.addEventListener('pointermove', (event) => {
         if (event.pointerType !== 'mouse' || !finePointer.matches) return;
-        inside = true;
-        sync();
+        if (!event.pointerMoved) return; // the page scrolled; the mouse did not
+        if (previewing === row || pinnedState.get(row) !== null) return;
+        if (performance.now() - lastUserScroll < INTENT_MS) return;
+        const scheduledAt = performance.now();
+        clearTimeout(timer);
+        timerRow = row;
+        // Restarted on every move, so it fires once the pointer settles
+        timer = setTimeout(() => {
+          timer = 0;
+          timerRow = null;
+          if (lastUserScroll > scheduledAt || !row.matches(':hover')) return;
+          preview(row);
+        }, INTENT_MS);
       });
 
       row.addEventListener('pointerleave', (event) => {
         if (event.pointerType !== 'mouse' || !finePointer.matches) return;
-        inside = false;
-        if (pinned === false) pinned = null; // a held-shut row goes back to hovering
-        sync();
+        if (timerRow === row) cancel();
+        if (pinnedState.get(row) === false) pinnedState.set(row, null); // held shut goes back to hovering
       });
 
       row.addEventListener('keydown', (event) => {
         if (event.key !== 'Escape' || !row.open) return;
-        pinned = false;
-        inside = false;
-        sync();
+        pinnedState.set(row, false);
+        if (previewing === row) previewing = null;
+        apply(row);
         summary.focus();
       });
+    });
+
+    list.addEventListener('pointerleave', (event) => {
+      if (event.pointerType !== 'mouse' || !finePointer.matches) return;
+      cancel();
+      preview(null);
     });
   });
 

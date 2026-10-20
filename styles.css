@@ -37,6 +37,7 @@
   --font-heading: "Crimson Pro", Georgia, serif;
   --font-body: "Jost", "Helvetica Neue", Arial, sans-serif;
   --font-geist: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-franklin: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
 
   /* Type scale (Title > Quote > Heading > Body > Subtitle) */
   --text-display: clamp(3rem, 7vw, 6rem);
@@ -707,10 +708,11 @@ ul, ol { padding: 0; }
 }
 
 /* ── Home: membership list ──────────────────────────────────────────────── */
-/* Same face, weight, tracking and caps as the .text-link beneath the list
-   ("Areas of expertise →"), 2pt (~2.67px) larger — Lauren, 15 Oct 2026 */
+/* Lead and list in Libre Franklin (Lauren, 19 Oct 2026). The lead keeps the
+   weight, tracking and caps of the "Areas of expertise →" link beneath,
+   2pt (~2.67px) larger; the link itself stays in Instrument Sans. */
 .membership-lead {
-  font-family: var(--font-subtitle);
+  font-family: var(--font-franklin);
   font-weight: 600;
   font-size: 0.9167rem;
   line-height: 1.4;
@@ -721,13 +723,11 @@ ul, ol { padding: 0; }
   margin-top: clamp(28px, 3vw, 40px);
   list-style: none;
 }
-/* Geist Bold, not the Instrument Serif this list used to carry: the serif
-   ships in one weight, so asking it for bold would only get a synthesised
-   one, which smears a face with this much stroke contrast. */
+/* Libre Franklin Bold, loaded at 700 so the bold is real, not synthesised */
 .navigate-list li {
   padding-block: clamp(14px, 1.6vw, 20px);
   border-bottom: 1px solid var(--color-line-strong);
-  font-family: var(--font-geist);
+  font-family: var(--font-franklin);
   font-weight: 700;
   font-size: clamp(1.5rem, 2.5vw, 2.125rem);
   line-height: 1.2;
@@ -866,8 +866,10 @@ ul, ol { padding: 0; }
   }
 }
 .feature-band__inner .lede { margin-top: 24px; }
-/* Opening lines run 2.5px above the paragraph beneath at every width */
-.feature-band__inner .feature-band__intro { font-size: calc(var(--text-lede) + 0.15625rem); }
+/* Both paragraphs run 2.5px above the standard lede at every width — the
+   opening lines first (15 Oct 2026), then the paragraph beneath to match
+   them (Lauren, 19 Oct 2026) */
+.feature-band__inner .lede { font-size: calc(var(--text-lede) + 0.15625rem); }
 /* The first block is broken by hand into two lines; keep those breaks from
    producing orphans once the column is narrower than the sentences. */
 @media (max-width: 640px) {
@@ -1134,9 +1136,17 @@ ul, ol { padding: 0; }
      usual recipe — meant the content stayed unrendered for the first stretch of
      the open, so the box grew empty and the text popped in part-way: a flash.
      Left alone it renders from the first frame and the fold simply reveals it. */
+  /* Folds shut at the same pace, matching the Expertise rows (Lauren,
+     19 Oct 2026). content-visibility is transitioned on this closed state
+     only — a transition is taken from the state being entered — so the open
+     below still renders from the first frame, as the note above requires. */
+  transition: block-size 0.75s var(--ease-fold),
+              content-visibility 0.75s allow-discrete;
+}
+.credential-group[open]::details-content {
+  block-size: auto;
   transition: block-size 0.75s var(--ease-fold);
 }
-.credential-group[open]::details-content { block-size: auto; }
 .credential-list { list-style: none; }
 .credential-list li {
   display: flex;
@@ -1211,9 +1221,20 @@ ul, ol { padding: 0; }
 .disclosure::details-content {
   block-size: 0;
   overflow: hidden;
+  /* Closing folds up at the same pace instead of snapping shut. Snapping
+     yanked every row below upward, so a cursor moving down from one row
+     landed on the row after the one it was aiming for (Lauren, 19 Oct 2026).
+     content-visibility is transitioned here only, on the way shut: a
+     transition is taken from the state being entered, so the [open] rule
+     below — which leaves it out — keeps the opening free of the flash
+     described on .credential-group::details-content. */
+  transition: block-size 0.75s var(--ease-fold),
+              content-visibility 0.75s allow-discrete;
+}
+.disclosure[open]::details-content {
+  block-size: auto;
   transition: block-size 0.75s var(--ease-fold);
 }
-.disclosure[open]::details-content { block-size: auto; }
 
 /* ── In Their Words: closing quote band ─────────────────────────────────── */
 /* Pale wall over foliage, so the scrim has to hold the whole frame as the
