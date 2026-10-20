@@ -57,7 +57,7 @@
   --section-space: clamp(72px, 10vw, 140px);
   --radius: 4px;
 
-  --announce-h: 44px;
+  --announce-h: 32px;
   --header-top-h: 72px;
   --header-nav-h: 36px;
   --header-h: calc(var(--header-top-h) + var(--header-nav-h));
@@ -73,7 +73,7 @@
 
 @media (max-width: 900px) {
   :root {
-    --announce-h: 60px;
+    --announce-h: 45px;
     --header-top-h: 64px;
     --header-nav-h: 0px;
   }
@@ -318,7 +318,7 @@ ul, ol { padding: 0; }
   align-items: center;
   justify-content: center;
   min-height: var(--announce-h);
-  padding: 10px var(--gutter);
+  padding: 6px var(--gutter);
   background: var(--espresso);
   color: var(--ivory);
   font-size: 0.75rem;
@@ -426,7 +426,7 @@ ul, ol { padding: 0; }
   font-weight: 500;
   /* The minimum stays where it was: at phone width the utility row has the menu
      button and SUBSCRIBE either side of it, and a larger floor overflows. */
-  font-size: clamp(1.0625rem, 2.1vw, 1.75rem);
+  font-size: clamp(1.0625rem, 2.3vw, 1.9375rem); /* ~10% up on desktop — Lauren, 19 Oct 2026 */
   letter-spacing: -0.015em;
   line-height: 1;
   text-decoration: none;
@@ -1448,7 +1448,12 @@ ul, ol { padding: 0; }
   --color-text-soft: var(--ivory);
   --color-accent: var(--ivory);
   --color-line-strong: rgba(234, 231, 208, 0.4);
-  background: var(--espresso);
+  /* Dark Walnut at 50% — Lauren, 19 Oct 2026. The dimmed backdrop sits behind
+     it, which keeps ivory type above AA over a light page. */
+  background: color-mix(in srgb, var(--espresso) 50%, transparent);
+  /* Frosted glass, so the page behind reads as colour, not as competing type */
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
   color: var(--ivory);
   transform: translateX(100%);
   transition: transform 0.5s var(--ease);
@@ -1483,7 +1488,8 @@ ul, ol { padding: 0; }
 /* Keep browser autofill from painting a light box with dark text */
 .inquire-panel .field input:-webkit-autofill {
   -webkit-text-fill-color: var(--ivory);
-  box-shadow: 0 0 0 1000px var(--espresso) inset;
+  /* Delay autofill's own fill indefinitely so the see-through sheet shows */
+  transition: background-color 600000s 0s;
   caret-color: var(--ivory);
 }
 
