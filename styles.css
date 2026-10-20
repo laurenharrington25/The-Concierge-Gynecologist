@@ -985,6 +985,22 @@ ul, ol { padding: 0; }
     object-position: 25% top;
   }
 }
+/* Q&A: zoomed out (Lauren, 20 Oct 2026). Filling the full hero height
+   enlarged this 2400px photograph about 1.3x on a 2x laptop screen and it
+   read as grainy. Above 900px it is fitted to the hero's width instead (on a
+   screen wider than 2:1 that is already taller than the hero, so it still
+   fills), and its top and bottom edges fade into the espresso behind it. */
+@media (min-width: 901px) {
+  .page-questions .page-hero__bg {
+    inset: auto 0;
+    top: 50%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    transform: translateY(-50%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+  }
+}
 /* Narrower laptops show less of the photograph's width, so slide the window
    further right to keep her in frame; the hand still lands under the words. */
 @media (min-width: 901px) and (max-width: 1199px) {
@@ -1349,29 +1365,66 @@ ul, ol { padding: 0; }
    because they are one-sentence excerpts set large; these run to eighteen
    lines, and centred body copy makes the eye hunt for the start of each one. */
 .reviews--full .reviews__item { text-align: left; }
-/* A px measure, not em: the quote mark is set at 2.75rem, so an em value here
-   would resolve to a different width for it than for the review text and the
-   two would not line up. */
+/* A px measure, not em, so the column is the same width whatever the font
+   size of the element it lands on. */
 .reviews--full .reviews__item > * { max-width: 880px; margin-inline: auto; }
 .reviews--full .reviews__item blockquote p {
   font-size: clamp(1.375rem, 2.3vw, 2rem);
   line-height: 1.55;
+  /* Justified to both margins (Lauren, 20 Oct 2026); the last line stays
+     ranged left. No hyphenation — words are never split across lines. */
+  text-align: justify;
 }
-/* The glyph sits high in its em box, so at this size the line box leaves a
-   large well of empty space under it. Tight line-height plus a negative margin
-   pulls the first line of the review back up to it. */
+/* A phone column holds only five or six words a line at this size, so
+   justifying opens gaps wide enough to read as holes. Ranged left there. */
+@media (max-width: 640px) {
+  .reviews--full .reviews__item blockquote p { text-align: left; }
+}
+/* Oversized, translucent marks that frame each review (Lauren, 20 Oct 2026):
+   about 2.5x their old 8.25rem, set behind the text inside the blockquote —
+   opening at the top-left corner, closing at the right edge level with the last
+   line — so they no
+   longer take up lines of their own. The glyph sits high in its em box, which
+   is what the offsets below allow for. */
+.reviews--full .reviews__item blockquote {
+  position: relative;
+  isolation: isolate;
+}
 .reviews--full .testimonial__mark {
+  position: absolute;
+  z-index: -1;
   height: auto;
-  margin-bottom: -0.42em;
-  font-size: 8.25rem;
-  line-height: 0.62;
+  margin: 0;
+  font-size: clamp(10rem, 22vw, 20rem);
+  line-height: 1;
+  color: var(--stone);
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
 }
-/* Closing mark, set against the right edge of the same column so the review
-   sits between the two of them. */
-.testimonial__mark--close {
-  margin-top: -0.05em;
-  margin-bottom: 0;
-  text-align: right;
+.reviews--full .testimonial__mark:not(.testimonial__mark--close) { top: -0.3em; left: -0.38em; }
+/* The closing mark is pinned to the right edge of the column, mirroring the
+   opening mark on the left, with its ink level with the last line: a shorter
+   review only moves it up, never sideways (Lauren, 20 Oct 2026). The
+   blockquote is its containing block, so being inside the <p> does not matter. */
+.reviews--full .testimonial__mark--close { right: -0.46em; bottom: -0.74em; }
+/* No room to hang outside the column on a phone: tuck the opening mark in
+   from the edge. A closing mark after a full-width last line can still reach
+   past the screen, so the band clips sideways overflow rather than letting it
+   widen the page. */
+@media (max-width: 900px) {
+  .reviews--full .testimonial__mark:not(.testimonial__mark--close) { left: -0.02em; }
+  .reviews--full .testimonial__mark--close { right: -0.02em; }
+}
+.reviews--full { overflow-x: clip; }
+/* On narrower desktops the 880px column leaves too little room beside it for
+   the hanging marks, and the band clips them. Narrow the column there by
+   roughly what the marks hang out on each side (0.48 of their size), plus a
+   little air. From about 1250px wide this resolves to 880px again. */
+@media (min-width: 901px) {
+  .reviews--full .reviews__item > * {
+    max-width: min(880px, calc(100vw - 0.96 * clamp(10rem, 22vw, 20rem) - 32px));
+  }
 }
 .reviews--full .reviews__controls { margin-top: 56px; }
 

@@ -278,6 +278,7 @@ The closing "On-site care" block is centred copy with no photograph — the port
 **Descriptions are Dr. Harrington's own words — quote them verbatim and don't paraphrase.** The first nine are hers as written. The four **Procedures** rows are cut from her single "Procedures" sentence and the IUD clause of "Contraception" — no new copy was written, but she has never described these four individually. See §10.
 
 ### Q&A
+- **Hero photograph is zoomed out** (20 Oct 2026, Lauren): above 900px `questions.jpg` (2400×1200) is fitted to the hero's width rather than filling its height, which had enlarged it ~1.3× on 2× laptop screens and made it look grainy. Its top and bottom edges fade into espresso with a mask. On phones it still fills the hero, so it is enlarged more there — a higher-resolution master would fix both.
 Replaced the Care Model page on 2026-09-30 (that page's markup is in git history at `care-model/index.html`). Full-screen image header, then three groups of native `<details>` accordions — **The practice**, **Care and treatment**, **Alongside your other care** — closed by default, same plus/minus fold as the credential groups.
 
 Eight questions, **Dr. Harrington's own answers, verbatim** (supplied 30 Sep 2026, revised 5 Oct 2026). The scaffold questions that stood here before were replaced wholesale; they are in git history if any are wanted back.
@@ -298,6 +299,8 @@ Her founder's statement **moved to the foot of the Expertise page** on 8 Oct 202
 The three-paragraph bio is **Dr. Harrington's own copy** (supplied 30 Sep 2026) — quote it verbatim. The `Person` JSON-LD in `<head>` mirrors it: the honor societies sit in `memberOf` and the teaching appointment in `affiliation`. If the bio changes, change the schema with it.
 
 ### In Their Words
+- **Review text is justified** to both margins (20 Oct 2026, Lauren), last line ranged left. **No hyphenation** — Lauren does not want words split across lines. Below 641px it falls back to ranged left — a phone line holds five or six words, and justifying them left visible holes.
+- **Quote marks frame each review** (20 Oct 2026, Lauren): Instrument Serif “ ” at `clamp(10rem, 22vw, 20rem)` (~2.5× the old 8.25rem), stone at 35% opacity, behind the text. The opening mark hangs off the top-left of the column; the closing mark is pinned to the right edge, level with the last line — it moves up for a shorter review but never sideways. Offsets: opening `top -0.3em; left -0.38em`, closing `right -0.46em; bottom -0.74em`. Between 901px and ~1250px the review column narrows (`min(880px, 100vw − 0.96 × mark size − 32px)`) so the hanging marks always have room instead of being clipped at the screen edge. Below 900px the opening mark tucks inside the gutter, and the band clips sideways overflow so a long last line cannot widen the page.
 Fourteen patient reviews, quoted verbatim, **one at a time in a carousel** — the same rotator as the home page, on a 9s interval because these are whole reviews rather than one-line excerpts. Replaced a two-column grid of all fourteen on 2026-09-30.
 
 - Body face at `clamp(1.375rem, 2.3vw, 2rem)`, **ranged left inside a centred 880px column**. The column is in px rather than em so the measure holds as the type size changes, and so the quote marks line up with the review text instead of resolving to their own width.
