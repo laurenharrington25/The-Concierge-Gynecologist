@@ -709,12 +709,12 @@ ul, ol { padding: 0; }
 
 /* ── Home: membership list ──────────────────────────────────────────────── */
 /* Lead and list in Libre Franklin (Lauren, 19 Oct 2026). The lead keeps the
-   weight, tracking and caps of the "Areas of expertise →" link beneath,
-   2pt (~2.67px) larger; the link itself stays in Instrument Sans. */
+   weight, tracking and caps of the "Areas of expertise →" link beneath, at
+   16px (was 14.67px; nudged up 20 Oct 2026); the link stays in Instrument Sans. */
 .membership-lead {
   font-family: var(--font-franklin);
   font-weight: 600;
-  font-size: 0.9167rem;
+  font-size: 1rem;
   line-height: 1.4;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -967,13 +967,28 @@ ul, ol { padding: 0; }
 /* The headline sits in the left half, and in the default centre crop she stands
    right behind it. Shifting the window to the left edge of the image moves her
    clear to the right. */
-.page-expertise .page-hero__bg { object-position: left center; }
 .page-hero__bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.page-expertise .page-hero__bg { object-position: left center; }
+/* Desktop: drop her outstretched arm below the two-line headline and slide it
+   left, so the arm frames the words instead of running through "life."
+   (Lauren, 20 Oct 2026). The image box is taller than the hero, which pushes
+   the arms (64% down the photograph) lower; the overflow is clipped. */
+@media (min-width: 901px) {
+  .page-expertise .page-hero__bg {
+    height: 122%;
+    object-position: 25% top;
+  }
+}
+/* Narrower laptops show less of the photograph's width, so slide the window
+   further right to keep her in frame; the hand still lands under the words. */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .page-expertise .page-hero__bg { object-position: 42% top; }
 }
 .page-hero--media::after {
   content: "";
@@ -1063,7 +1078,7 @@ ul, ol { padding: 0; }
 }
 .profile__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
 .profile__body .title { margin-top: 16px; }
-.profile__body .prose { margin-top: 32px; }
+.profile__body .prose { margin-top: 32px; font-size: 1.125rem; } /* 18px, a touch above body — Lauren, 20 Oct 2026 */
 
 @media (max-width: 900px) {
   .profile { grid-template-columns: minmax(0, 1fr); }
@@ -1087,6 +1102,17 @@ ul, ol { padding: 0; }
   cursor: pointer;
 }
 .credential-group__summary::-webkit-details-marker { display: none; }
+/* Group titles in Jost caps rather than the Crimson Pro heading face (Lauren,
+   20 Oct 2026). Caps read a size larger than mixed case, so this sits below
+   --text-heading-sm, with tracking like the site's other caps labels. Caps
+   come from CSS, so screen readers still read words. */
+.credential-group__summary .heading {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1.125rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 
 /* Plus that turns into a minus when open */
 .credential-group__icon,
@@ -1153,6 +1179,7 @@ ul, ol { padding: 0; }
   justify-content: space-between;
   gap: 24px;
   padding-block: 14px;
+  font-size: 1.125rem; /* 18px; detail and meta 16px — Lauren, 20 Oct 2026 */
   border-bottom: 1px solid var(--color-line);
 }
 .credential-list li:first-child { padding-top: 0; }
@@ -1162,10 +1189,10 @@ ul, ol { padding: 0; }
 .credential-list__meta {
   flex: none;
   color: var(--taupe);
-  font-size: var(--text-small);
+  font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
-.credential-list__detail { display: block; color: var(--taupe); font-size: var(--text-small); }
+.credential-list__detail { display: block; color: var(--taupe); font-size: 1rem; }
 
 @media (max-width: 720px) {
   .credential-group__body { grid-template-columns: minmax(0, 1fr); }
