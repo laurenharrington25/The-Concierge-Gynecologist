@@ -342,7 +342,7 @@ Standalone versions of the panel's two forms, for direct links and no-JS visitor
 - **Plain static HTML + one CSS file + one vanilla JS file.** No framework, no build step, no npm dependencies at runtime.
 - **Hosting:** Netlify (publish directory is the repo root; config in `netlify.toml`).
 - **Forms:** Netlify Forms (`data-netlify="true"`), with email notifications to contact@theconciergegynecologist.com configured in the Netlify dashboard.
-- **Subscriber welcome email:** Resend (to be set up; see open tasks). Will run as a Netlify Function in `netlify/functions/`.
+- **Subscriber welcome email:** Resend, via `netlify/functions/submission-created.js` on every Subscribe ("updates") submission. Since 21 Oct 2026 it also saves the subscriber as a Resend contact (into `RESEND_AUDIENCE_ID` if set). Needs `RESEND_API_KEY`, `RESEND_FROM` (on a domain verified in Resend) and **Netlify form detection switched on** — without it the forms never reach Netlify at all.
 
 ### File structure
 ```

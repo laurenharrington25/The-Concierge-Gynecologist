@@ -8,6 +8,10 @@
  *   RESEND_FROM      e.g. "The Concierge Gynecologist <contact@theconciergegynecologist.com>"
  *                    The domain must be verified in Resend first.
  *
+ * OPTIONAL
+ *   RESEND_AUDIENCE_ID  the Resend audience new subscribers are saved to as
+ *                       contacts; without it they go to the account's contacts
+ *
  * Event-triggered functions use the classic handler signature.
  */
 
@@ -55,10 +59,31 @@ exports.handler = async (event) => {
     }),
   });
 
+  // Save the subscriber as a Resend contact too, so newsletters can be sent
+  // from Resend later. A failure here is logged but never blocks the welcome
+  // email, which has already gone. With RESEND_AUDIENCE_ID set, the contact
+  // goes into that audience; without it, into the account's contacts.
+  const [firstName, ...rest] = name.split(/\s+/).filter(Boolean);
+  const { RESEND_AUDIENCE_ID } = process.env;
+  const contactUrl = RESEND_AUDIENCE_ID
+    ? `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`
+    : 'https://api.resend.com/contacts';
+  const contactRes = await fetch(contactUrl, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email,
+      first_name: firstName || undefined,
+      last_name: rest.join(' ') || undefined,
+      unsubscribed: false,
+    }),
+  });
+  if (!contactRes.ok) console.error('Resend contact not saved', contactRes.status, await contactRes.text());
+
   if (!res.ok) {
     const detail = await res.text();
     console.error('Resend failed', res.status, detail);
     return { statusCode: 502, body: `Resend error ${res.status}` };
   }
-  return { statusCode: 200, body: `Welcome email sent to ${email}` };
+  return { statusCode: 200, body: `Welcome email sent to ${email}${contactRes.ok ? '; contact saved' : ''}` };
 };
