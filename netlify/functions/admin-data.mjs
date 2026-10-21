@@ -11,7 +11,7 @@
  *
  * REQUIRED ENVIRONMENT VARIABLES (Netlify → Site configuration → Environment)
  *   ADMIN_PASSWORD     the password for /admin/
- *   NETLIFY_API_TOKEN  personal access token, used to read form submissions
+ *   NETLIFY_API_KEY    personal access token, used to read form submissions
  *   SITE_ID            supplied automatically by Netlify
  */
 
@@ -60,7 +60,7 @@ const field = (s, ...names) => {
 export default async (req) => {
   if (req.method !== 'POST') return json({ error: 'Method not allowed' }, 405);
 
-  const { ADMIN_PASSWORD, NETLIFY_API_TOKEN, SITE_ID } = process.env;
+  const { ADMIN_PASSWORD, NETLIFY_API_KEY, SITE_ID } = process.env;
   if (!ADMIN_PASSWORD) return json({ error: 'ADMIN_PASSWORD is not set on this site.' }, 500);
 
   let body = {};
@@ -71,21 +71,21 @@ export default async (req) => {
     return json({ error: 'Incorrect password.' }, 401);
   }
 
-  if (!NETLIFY_API_TOKEN || !SITE_ID) {
-    return json({ error: 'NETLIFY_API_TOKEN or SITE_ID is missing. See netlify/functions/admin-data.mjs.' }, 500);
+  if (!NETLIFY_API_KEY || !SITE_ID) {
+    return json({ error: 'NETLIFY_API_KEY or SITE_ID is missing. See netlify/functions/admin-data.mjs.' }, 500);
   }
 
   try {
     const [site, forms] = await Promise.all([
-      netlify(`/sites/${SITE_ID}`, NETLIFY_API_TOKEN),
-      netlify(`/sites/${SITE_ID}/forms`, NETLIFY_API_TOKEN),
+      netlify(`/sites/${SITE_ID}`, NETLIFY_API_KEY),
+      netlify(`/sites/${SITE_ID}/forms`, NETLIFY_API_KEY),
     ]);
 
     const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
     const group = async (formName) => {
       const form = forms.find((f) => f.name === formName);
       if (!form) return { total: 0, last30: 0, entries: [] };
-      const subs = await allSubmissions(form.id, NETLIFY_API_TOKEN);
+      const subs = await allSubmissions(form.id, NETLIFY_API_KEY);
       return {
         total: subs.length,
         last30: subs.filter((s) => new Date(s.created_at).getTime() > thirtyDaysAgo).length,

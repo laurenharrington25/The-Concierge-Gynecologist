@@ -136,12 +136,13 @@ Same-week appointments, direct access…       ← body (Jost)
 
 - **Subjects:** real women in their 40s–60s living active, grounded lives (walking, hiking, swimming, laughing with friends), plus Dr. Harrington in a calm office setting.
 - **Look:** natural light, warm neutrals that sit inside the palette, soft contrast, candid rather than posed. Nothing sterile, no exam tables, no stethoscope close-ups, no stock "doctor pointing at clipboard."
-- **Home hero video:** nine short clips, **2 seconds each** on screen (encoded at 2.8s so the cross-dissolve always has moving footage on both sides) — except **hero-4 and hero-10, which are 2.0s**; they carry no `loop` attribute so they hold their last frame through the dissolve instead of restarting in view (19 Oct 2026). Re-encode them at 2.8s from the masters and the `loop` can go back, crossfading. Muted, `playsinline`, no controls. Each clip ≤ 3MB, 1920px wide, H.264 MP4 (plus an optional WebM), with a still `poster` image. Keep the clip length and the rotator's `data-interval` in `index.html` in step.
+- **Home hero video:** nine short clips, **2 seconds each** on screen (encoded at 2.8s so the cross-dissolve always has moving footage on both sides). All nine are 2.8s and loop; hero-4 (runner, `365564_Fence_Curly_Hair…`) and hero-10 (hikers, `412980_Man_Mountain_Rocks_Trail…`) were re-cut at 2.8s from their 4K masters on 21 Oct 2026, both from 3.0s in, crossfading. Muted, `playsinline`, no controls. Each clip ≤ 3MB, 1920px wide, H.264 MP4 (plus an optional WebM), with a still `poster` image. Keep the clip length and the rotator's `data-interval` in `index.html` in step.
 - **Video workflow:** drop full-resolution source files in `videos/originals/` (git-ignored, never deployed). Encode each as the next `videos/hero-<n>.mp4` with a poster frame, then add a slide in `index.html`:
   ```bash
   ffmpeg -ss 2 -i videos/originals/SOURCE.mp4 -t 2 -an -vf "scale=1920:-2,fps=25" -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -movflags +faststart videos/hero-2.mp4
   ffmpeg -i videos/hero-2.mp4 -frames:v 1 -q:v 4 images/hero/hero-2.jpg
   ```
+  **No ffmpeg on this Mac?** `swift tools/encode-hero-clip.swift <master> videos/hero-<n>.mp4 images/hero/hero-<n>.jpg <start>` does the same cut, scale, 25 fps and H.264 encode with macOS's AVFoundation and writes the poster too (2.8s and ~1.1 Mb/s by default). Lauren's masters live outside the repo in `Documents/TCG/Whole Video Clips/`.
   `-ss` (before `-i`) picks the start second; `-t 2` takes the two seconds that follow. Always cut from the 4K master rather than re-encoding an already-compressed clip, and never leave a raw master in `videos/` — everything there ships.
 - **Files:** `images/<section>/<descriptive-kebab-name>.jpg` and `videos/hero-<n>.mp4`. JPG/WebP at 82% quality, max 2400px on the long edge. Always set `width`/`height` attributes and descriptive `alt` text.
 - **Icons:** the offering icons are illustrated elements from the Haute Stock graphics packs, trimmed to their artwork and exported at 160px to `images/icons/<slug>.png` (sources in `images/originals/icons/`, git-ignored). They are used at 38px in the offerings rows and 30px in the home list. The set is deliberately limited to the botanical and celestial pieces so it reads as one family — the packs' beach and beauty motifs (flip-flops, lipstick, cocktails) are off-brand and stay unused. Mapping: Perimenopause → crescent moon · Menopause → sun · Sexual function → flowering sprig · Cancer survivorship → olive branch · Previvor surveillance → four-point star · Abnormal uterine bleeding → moon phases · Pelvic pain → waves · Vulvar conditions → daisies · Contraception → three circles · Procedures → crystals.
@@ -438,7 +439,7 @@ Then open http://localhost:3000. Netlify Forms only work on the deployed site; l
 | Owner | Task |
 |---|---|
 | Dev/Lauren | **After the Netlify site exists:** set `ADMIN_PASSWORD` in Site configuration → Environment variables. This is the /admin password — use a long random one, not a short shared word; the page lists subscriber names and emails |
-| Dev/Lauren | Set `NETLIFY_API_TOKEN` (a personal access token) so /admin can read form submissions |
+| Dev/Lauren | Set `NETLIFY_API_KEY` (a personal access token) so /admin can read form submissions — renamed from NETLIFY_API_TOKEN on 21 Oct 2026 to match the variable Lauren saved |
 | Dev/Lauren | Set `RESEND_API_KEY` and `RESEND_FROM`, then redeploy — environment changes do not apply to existing deploys |
 | Dev/Lauren | Verify theconciergegynecologist.com in Resend (DKIM/SPF) before the first real send |
 | Lauren | ~~Provide logo files~~ — done 4 Oct 2026, wired in 8 Oct (see §6, Logo) |
