@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /unsubscribe/
 
 Sitemap: https://theconciergegynecologist.com/sitemap.xml

@@ -13,8 +13,23 @@
  *   RESEND_AUDIENCE_ID  the Resend audience new subscribers are saved to as
  *                       contacts; without it they go to the account's contacts
  *
+ *   RESEND_WELCOME_TEMPLATE  id or alias of the welcome template; defaults
+ *                       to "welcome" (tools/create-welcome-template.mjs)
+ *   UNSUBSCRIBE_SECRET  signs unsubscribe links instead of the API key; see
+ *                       netlify/functions/unsubscribe.mjs
+ *
  * Event-triggered functions use the classic handler signature.
  */
+
+const { createHmac } = require('node:crypto');
+
+const SITE = (process.env.URL || 'https://theconciergegynecologist.com').replace(/\/$/, '');
+
+// Keep in step with tokenFor() in unsubscribe.mjs
+const unsubscribeToken = (email, secret) =>
+  createHmac('sha256', secret).update(email.trim().toLowerCase()).digest('base64url').slice(0, 32);
+
+const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 exports.handler = async (event) => {
   let payload = {};
@@ -23,7 +38,8 @@ exports.handler = async (event) => {
   const formName = payload.form_name;
   if (formName !== 'updates') return { statusCode: 200, body: `Ignored form: ${formName}` };
 
-  const email = payload.data?.email;
+  // Lowercased so the contact saved here is the one unsubscribe.mjs updates
+  const email = (payload.data?.email || '').trim().toLowerCase();
   const name = (payload.data?.name || '').trim();
   if (!email) return { statusCode: 200, body: 'No email address on submission' };
 
@@ -41,7 +57,15 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: 'Resend not configured' };
   }
 
-  const greeting = name ? `Hello ${name.split(' ')[0]},` : 'Hello,';
+  // Unsubscribe: the visible link opens a confirm page (mail scanners follow
+  // links, so it must not act on its own); the List-Unsubscribe headers give
+  // Gmail and Apple Mail their one-click button, which POSTs to the function.
+  const token = unsubscribeToken(email, process.env.UNSUBSCRIBE_SECRET?.trim() || RESEND_API_KEY);
+  const query = `email=${encodeURIComponent(email)}&token=${token}`;
+  const unsubscribePage = `${SITE}/unsubscribe/?${query}`;
+  const oneClick = `${SITE}/.netlify/functions/unsubscribe?${query}`;
+
+  const greeting = name ? `Hello ${escapeHtml(name.split(' ')[0])},` : 'Hello,';
   const html = `
     <div style="font-family:Georgia,serif;color:#1f1711;max-width:520px;line-height:1.7">
       <p style="font-family:Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#716862">
@@ -55,18 +79,39 @@ exports.handler = async (event) => {
       <p style="font-size:12px;color:#716862;margin-top:32px">
         This message is for general information and is not medical advice.
       </p>
+      <p style="font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#716862">
+        You are receiving this because you subscribed at theconciergegynecologist.com.
+        <a href="${unsubscribePage.replace(/&/g, '&amp;')}" style="color:#716862">Unsubscribe</a>
+      </p>
     </div>`;
 
-  const res = await fetch('https://api.resend.com/emails', {
+  // Send from the published Resend template (alias "welcome", created by
+  // tools/create-welcome-template.mjs and edited in Resend → Templates). If
+  // it is missing or unpublished, fall back to the HTML above so a sign-up
+  // never goes without its welcome.
+  const send = (content) => fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: RESEND_FROM,
       to: [email],
       subject: 'Welcome — The Concierge Gynecologist',
-      html,
+      headers: {
+        'List-Unsubscribe': `<${oneClick}>, <mailto:contact@theconciergegynecologist.com?subject=Unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
+      ...content,
     }),
   });
+  const template = process.env.RESEND_WELCOME_TEMPLATE?.trim() || 'welcome';
+  const greetingName = name ? escapeHtml(name.split(/\s+/)[0]) : 'there';
+  let res = await send({ template: { id: template, variables: { FIRST_NAME: greetingName, UNSUBSCRIBE_URL: unsubscribePage } } });
+  let via = `template "${template}"`;
+  if (!res.ok && res.status < 500) {
+    console.warn('Welcome template not used, sending built-in HTML:', res.status, await res.text());
+    res = await send({ html });
+    via = 'built-in HTML';
+  }
 
   // Save the subscriber as a Resend contact too, so newsletters can be sent
   // from Resend later. A failure here is logged but never blocks the welcome
@@ -94,5 +139,5 @@ exports.handler = async (event) => {
     console.error('Resend failed', res.status, detail);
     return { statusCode: 502, body: `Resend error ${res.status}` };
   }
-  return { statusCode: 200, body: `Welcome email sent to ${email}${contactRes.ok ? '; contact saved' : ''}` };
+  return { statusCode: 200, body: `Welcome email sent to ${email} via ${via}${contactRes.ok ? '; contact saved' : ''}` };
 };

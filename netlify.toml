@@ -42,6 +42,15 @@
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"
 
+# Unsubscribe links carry an email address: keep the page out of search
+# results and never cache it. (No-referrer is set by a meta tag in the page,
+# so it does not collide with the site-wide Referrer-Policy below.)
+[[headers]]
+  for = "/unsubscribe/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
 # ── Security headers
 [[headers]]
   for = "/*"

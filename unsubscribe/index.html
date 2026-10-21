@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- No Google tag on this page: its URL carries the subscriber's email
+       address, which must not be sent to analytics. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+
+  <title>Unsubscribe — The Concierge Gynecologist</title>
+  <meta name="description" content="Unsubscribe from Dr. Lauren Harrington’s newsletter.">
+  <meta name="theme-color" content="#eae7d0">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@500&family=Geist:wght@400;500;700&family=Instrument+Sans:wght@600&family=Instrument+Serif:ital@0;1&family=Jost:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/script.js"></script>
+</head>
+<body class="page-unsubscribe">
+<!-- partial:header -->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="announcement" role="region" aria-label="Announcement">
+  <p>A membership-based practice for specialized hormone therapy in Denver, Colorado.</p>
+</div>
+
+<header class="site-header" data-header>
+  <div class="site-header__top">
+    <div class="site-header__utility">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <span class="menu-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+      <span class="utility-text">Denver Metro Area</span>
+    </div>
+
+    <a class="wordmark" href="/">The Concierge Gynecologist</a>
+
+    <div class="site-header__utility site-header__utility--right">
+      <a class="utility-link utility-link--strong" href="/stay-in-touch/" data-open-inquire="updates">Subscribe</a>
+      <a class="utility-link" href="/inquire/" data-open-inquire>Get in touch</a>
+    </div>
+  </div>
+
+  <nav class="site-nav" id="site-nav" aria-label="Main">
+    <ul class="site-nav__list">
+      <li><a class="site-nav__link" href="/expertise/">Expertise</a></li>
+      <li><a class="site-nav__link" href="/dr-harrington/">Dr. Harrington</a></li>
+      <li><a class="site-nav__link" href="/questions/">Q&amp;A</a></li>
+      <li><a class="site-nav__link" href="/in-their-words/">In Their Words</a></li>
+      <!-- Below 900px the utility row has no space for these, so the menu
+           carries them. Plain links, not panel triggers: a slide-out panel
+           over an already full-screen menu is a poor place to land. -->
+      <li class="site-nav__mobile-only"><a class="site-nav__link" href="/inquire/">Get in touch</a></li>
+      <li class="site-nav__mobile-only"><a class="site-nav__link" href="/stay-in-touch/">Subscribe</a></li>
+    </ul>
+  </nav>
+</header>
+<!-- /partial:header -->
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero__inner">
+        <p class="eyebrow">Unsubscribe</p>
+        <h1 class="title">We’re sorry to see you go.</h1>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reads ?email=…&token=… from the link in the welcome email, then asks
+       before acting: mail scanners open links on their own, so the page must
+       not unsubscribe anyone just by loading. See script.js [data-unsubscribe]
+       and netlify/functions/unsubscribe.mjs. -->
+  <div class="container form-page">
+    <section class="form-block" data-unsubscribe aria-live="polite">
+      <div data-unsubscribe-ask hidden>
+        <p class="lede">Unsubscribe <strong data-unsubscribe-email></strong> from Dr. Harrington’s newsletter?</p>
+        <div class="form__actions">
+          <button class="button" type="button" data-unsubscribe-confirm>Unsubscribe</button>
+          <p class="form__status" role="status" data-unsubscribe-status></p>
+        </div>
+      </div>
+      <p class="lede" data-unsubscribe-done hidden>You’re unsubscribed. You won’t receive any more newsletters from us. Changed your mind? You can <a href="/stay-in-touch/">subscribe again</a> at any time.</p>
+      <p class="lede" data-unsubscribe-invalid hidden>This unsubscribe link is incomplete. Please use the link in your most recent email, or write to <a href="mailto:contact@theconciergegynecologist.com?subject=Unsubscribe">contact@theconciergegynecologist.com</a> and we’ll take you off the list.</p>
+    </section>
+  </div>
+</main>
+
+<!-- partial:footer -->
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <a class="wordmark wordmark--lockup" href="/">The Concierge Gynecologist</a>
+      <p class="site-footer__tagline">A membership-based gynecology practice in Denver, Colorado providing specialized care for women in hormonal transitions.</p>
+    </div>
+    <nav aria-label="Footer">
+      <p class="eyebrow">Explore</p>
+      <ul class="site-footer__list">
+        <li><a href="/expertise/">Expertise</a></li>
+        <li><a href="/dr-harrington/">Dr. Harrington</a></li>
+        <li><a href="/questions/">Q&amp;A</a></li>
+        <li><a href="/in-their-words/">In Their Words</a></li>
+      </ul>
+    </nav>
+    <div>
+      <p class="eyebrow">Contact</p>
+      <ul class="site-footer__list">
+        <li><a href="/inquire/" data-open-inquire>Get in touch</a></li>
+        <li><a href="/stay-in-touch/" data-open-inquire="updates">Subscribe</a></li>
+      </ul>
+      <ul class="site-footer__social">
+        <li>
+          <a href="https://www.instagram.com/theconciergegynecologist" target="_blank" rel="me noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.4"/>
+              <circle cx="12" cy="12" r="4.4"/>
+              <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+            <span class="visually-hidden">Instagram (opens in a new tab)</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/layresharrington/" target="_blank" rel="me noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M6.94 5.5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0zM3.26 8.98h3.46V21H3.26zM9.45 8.98h3.32v1.64h.05c.46-.84 1.59-1.72 3.27-1.72 3.5 0 4.15 2.22 4.15 5.1V21h-3.46v-5.36c0-1.28-.02-2.92-1.84-2.92-1.85 0-2.13 1.39-2.13 2.83V21H9.45z"/>
+            </svg>
+            <span class="visually-hidden">LinkedIn (opens in a new tab)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="site-footer__legal">
+      <p>© <span data-year>2026</span> Dr. Lauren Harrington, MD PLLC. All rights reserved.</p>
+      <p>This website is for general information and is not medical advice.</p>
+    </div>
+  </div>
+</footer>
+<!-- /partial:footer -->
+
+<!-- partial:inquire-panel -->
+<!-- One panel, two independent modes. [data-open-inquire] opens the inquiry
+     form; [data-open-inquire="updates"] opens the sign-up. Only one is ever
+     shown — they are separate forms, never stacked. See script.js. -->
+<div class="inquire-panel" data-inquire-panel inert>
+  <div class="inquire-panel__backdrop" data-close-inquire></div>
+
+  <div class="inquire-panel__sheet" role="dialog" aria-modal="true" aria-labelledby="panel-inquiry-title">
+    <button class="inquire-panel__close" type="button" data-close-inquire>
+      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M1 1l16 16M17 1L1 17"/></svg>
+      <span class="visually-hidden">Close</span>
+    </button>
+
+    <section class="inquire-panel__mode" data-panel-mode="inquiry">
+      <p class="eyebrow">Get in touch</p>
+      <h2 class="title" id="panel-inquiry-title">Do you have a specific question or inquiry?</h2>
+      <p class="lede">Reach Dr. Harrington’s team directly. No medical questions or advice, please.</p>
+
+      <form class="form" name="inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-form>
+        <input type="hidden" name="form-name" value="inquiry">
+        <p class="visually-hidden"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="panel-first-name">First name</label>
+            <input id="panel-first-name" name="first-name" autocomplete="given-name" required data-panel-focus>
+          </div>
+          <div class="field">
+            <label for="panel-last-name">Last name</label>
+            <input id="panel-last-name" name="last-name" autocomplete="family-name" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="panel-email">Email address</label>
+          <input id="panel-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="panel-phone">Phone number <span class="field__optional">(optional)</span></label>
+          <input id="panel-phone" name="phone" type="tel" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label for="panel-message">Message</label>
+          <textarea id="panel-message" name="message" rows="4"></textarea>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" name="updates-opt-in" value="yes">
+          <span>I’d like to receive occasional updates — new partnerships, availability, and practice news.</span>
+        </label>
+        <p class="form__note">Please do not include personal medical details. This form is not monitored for urgent needs.</p>
+        <div class="form__actions">
+          <button class="button" type="submit">Send inquiry</button>
+          <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="inquire-panel__mode" data-panel-mode="updates" hidden>
+      <p class="eyebrow">Subscribe</p>
+      <h2 class="title" id="panel-updates-title">Want to know more?</h2>
+      <p class="lede">Subscribe to Dr. Harrington’s newsletter for information about how to become a patient, announcements about new practice locations, and current news in hormone health.</p>
+
+      <form class="form" name="updates" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-form data-success="You’re on the list. Thank you.">
+        <input type="hidden" name="form-name" value="updates">
+        <p class="visually-hidden"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <div class="field">
+          <label for="panel-updates-name">Name</label>
+          <input id="panel-updates-name" name="name" autocomplete="name" required data-panel-focus>
+        </div>
+        <div class="field">
+          <label for="panel-updates-email">Email</label>
+          <input id="panel-updates-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="form__actions">
+          <button class="button" type="submit">Subscribe</button>
+          <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+<!-- /partial:inquire-panel -->
+</body>
+</html>

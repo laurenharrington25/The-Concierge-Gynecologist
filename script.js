@@ -501,6 +501,53 @@
     schedule();
   }
 
+  // ── Unsubscribe page ────────────────────────────────────────────────────
+  // /unsubscribe/?email=…&token=… comes from the welcome email. Show the
+  // address and wait for the button: loading the page must never act on its
+  // own, because mail scanners open every link in a message. The query is
+  // wiped from the address bar straight away so the email address does not
+  // linger in history or get copied along with the URL.
+  const unsubscribe = document.querySelector('[data-unsubscribe]');
+  if (unsubscribe) {
+    const params = new URLSearchParams(location.search);
+    const email = params.get('email') || '';
+    const token = params.get('token') || '';
+    if (location.search) history.replaceState(null, '', location.pathname);
+
+    const show = (name) => {
+      ['ask', 'done', 'invalid'].forEach((n) => {
+        unsubscribe.querySelector(`[data-unsubscribe-${n}]`).hidden = n !== name;
+      });
+    };
+
+    if (!email || !token) {
+      show('invalid');
+    } else {
+      unsubscribe.querySelector('[data-unsubscribe-email]').textContent = email;
+      show('ask');
+      const button = unsubscribe.querySelector('[data-unsubscribe-confirm]');
+      const status = unsubscribe.querySelector('[data-unsubscribe-status]');
+      const fallback = 'Something went wrong. Please email contact@theconciergegynecologist.com.';
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        status.textContent = '';
+        try {
+          const res = await fetch('/.netlify/functions/unsubscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, token }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) { status.textContent = data.error || fallback; button.disabled = false; return; }
+          show('done');
+        } catch {
+          status.textContent = fallback; // offline, or the request never arrived
+          button.disabled = false;
+        }
+      });
+    }
+  }
+
   // ── Footer year ─────────────────────────────────────────────────────────
   document.querySelectorAll('[data-year]').forEach((el) => {
     el.textContent = String(new Date().getFullYear());
