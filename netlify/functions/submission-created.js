@@ -3,12 +3,13 @@
  * submitted. Sends the welcome email for the "updates" (Stay in touch) form
  * through Resend, and ignores every other form.
  *
- * REQUIRED ENVIRONMENT VARIABLES
- *   RESEND_API_KEY   from resend.com → API Keys
- *   RESEND_FROM      e.g. "The Concierge Gynecologist <contact@theconciergegynecologist.com>"
- *                    The domain must be verified in Resend first.
+ * REQUIRED ENVIRONMENT VARIABLE
+ *   RESEND_API_KEY   from resend.com → API Keys (scope must include Functions)
  *
  * OPTIONAL
+ *   RESEND_FROM      sender; defaults to
+ *                    "The Concierge Gynecologist <contact@theconciergegynecologist.com>".
+ *                    Either way its domain must be verified in Resend.
  *   RESEND_AUDIENCE_ID  the Resend audience new subscribers are saved to as
  *                       contacts; without it they go to the account's contacts
  *
@@ -26,9 +27,17 @@ exports.handler = async (event) => {
   const name = (payload.data?.name || '').trim();
   if (!email) return { statusCode: 200, body: 'No email address on submission' };
 
-  const { RESEND_API_KEY, RESEND_FROM } = process.env;
-  if (!RESEND_API_KEY || !RESEND_FROM) {
-    console.error('Resend is not configured: set RESEND_API_KEY and RESEND_FROM');
+  // RESEND_FROM falls back to the practice address, so only the key is
+  // required; the domain must still be verified in Resend for mail to send.
+  const RESEND_API_KEY = process.env.RESEND_API_KEY?.trim();
+  const RESEND_FROM = process.env.RESEND_FROM?.trim()
+    || 'The Concierge Gynecologist <contact@theconciergegynecologist.com>';
+  if (!RESEND_API_KEY) {
+    // Name the variables this function *can* see (names only, never values),
+    // so a near-miss spelling or a scope that leaves out Functions shows up
+    // in the log instead of a bare "not configured".
+    const seen = Object.keys(process.env).filter((k) => /resend/i.test(k));
+    console.error(`Resend is not configured: RESEND_API_KEY is missing. Resend-like variables visible to this function: ${seen.length ? seen.join(', ') : 'none'}`);
     return { statusCode: 500, body: 'Resend not configured' };
   }
 
