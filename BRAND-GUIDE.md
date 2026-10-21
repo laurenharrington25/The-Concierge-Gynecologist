@@ -136,7 +136,7 @@ Same-week appointments, direct access…       ← body (Jost)
 
 - **Subjects:** real women in their 40s–60s living active, grounded lives (walking, hiking, swimming, laughing with friends), plus Dr. Harrington in a calm office setting.
 - **Look:** natural light, warm neutrals that sit inside the palette, soft contrast, candid rather than posed. Nothing sterile, no exam tables, no stethoscope close-ups, no stock "doctor pointing at clipboard."
-- **Home hero video:** nine short clips, **2 seconds each** on screen (encoded at 2.8s so the cross-dissolve always has moving footage on both sides). All nine are 2.8s and loop; hero-4 (runner, `365564_Fence_Curly_Hair…`) and hero-10 (hikers, `412980_Man_Mountain_Rocks_Trail…`) were re-cut at 2.8s from their 4K masters on 21 Oct 2026, both from 3.0s in, crossfading. Muted, `playsinline`, no controls. Each clip ≤ 3MB, 1920px wide, H.264 MP4 (plus an optional WebM), with a still `poster` image. Keep the clip length and the rotator's `data-interval` in `index.html` in step.
+- **Home hero video:** nine short clips, **2 seconds each** on screen (encoded at 2.8s so the cross-dissolve always has moving footage on both sides). All nine are 2.8s and loop; hero-4 (runner, `365564_Fence_Curly_Hair…`) and hero-10 (hikers, `412980_Man_Mountain_Rocks_Trail…`) were re-cut at 2.8s from their 4K masters on 21 Oct 2026, both from 3.0s in, and published as **`hero-4-v2` / `hero-10-v2`** (files and posters): `/videos/*` and `/images/*` are cached as immutable for a year, so a changed clip must get a new file name or returning visitors keep the old one, crossfading. Muted, `playsinline`, no controls. Each clip ≤ 3MB, 1920px wide, H.264 MP4 (plus an optional WebM), with a still `poster` image. Keep the clip length and the rotator's `data-interval` in `index.html` in step.
 - **Video workflow:** drop full-resolution source files in `videos/originals/` (git-ignored, never deployed). Encode each as the next `videos/hero-<n>.mp4` with a poster frame, then add a slide in `index.html`:
   ```bash
   ffmpeg -ss 2 -i videos/originals/SOURCE.mp4 -t 2 -an -vf "scale=1920:-2,fps=25" -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -movflags +faststart videos/hero-2.mp4
@@ -406,7 +406,7 @@ Every page has: a unique `<title>` ("Page — The Concierge Gynecologist"), a me
 
 ### Privacy
 - This is a medical practice. **Web forms are not HIPAA-secure channels.** Forms must never ask for symptoms, diagnoses, or health history, and must tell visitors not to include them.
-- No third-party trackers or analytics without Dr. Harrington's sign-off; if analytics are added, prefer a privacy-first option (e.g., Plausible or Fathom) and add a privacy policy page.
+- No third-party trackers or analytics without Dr. Harrington's sign-off. **Google Analytics 4 (`G-NH5YB4F174`) was added with her sign-off on 21 Oct 2026**: the gtag snippet sits at the top of `<head>` on every public page, not on `/admin/`. It is not in a partial, so **a new page must have it pasted in by hand.** A privacy policy page is now owed (see open tasks).
 
 ### Local development
 ```bash
