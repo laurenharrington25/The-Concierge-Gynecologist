@@ -83,7 +83,7 @@ Four free Google Fonts, five roles. Loaded via one Google Fonts request in each 
 |---|---|---|---|---|---|
 | **Title** | Instrument Serif | Regular | 40–68px `--text-title` (hero: 48–96px `--text-display`) | -0.01em | `.title`, `.title--display` |
 | **Subtitle / eyebrow** | Instrument Sans | Semibold, ALL CAPS | 12px `--text-eyebrow` | +0.2em (Canva +200) | `.eyebrow` |
-| **Heading** | Crimson Pro | Medium (500), sentence case | 26–34px `--text-heading` | normal | `.heading`, `.heading--sm` |
+| **Heading** | Crimson Pro | Medium (500), sentence case | 26–34px `--text-heading` | normal | `.heading`, `.heading--sm` — **now used only on `/admin/`** (26 Oct 2026) |
 | **Body** | Jost | Regular 400 (Medium 500 for emphasis) | 17px `--text-body`; lede 18–21px | normal | default `body`, `.lede` |
 | **Quote** | Instrument Serif | Italic | 28–40px `--text-quote` | normal | `.quote` |
 
@@ -106,6 +106,8 @@ Same-week appointments, direct access…       ← body (Jost)
 3. **Instrument Serif stays large.** It has presence above 28px and gets thin below that. Titles, statements, and quotes only. Never body copy or fine print. *(The one exception is the text wordmark in the header, which is a stand-in until the real logo arrives.)*
 4. **Keep the two serifs from competing.** Instrument Serif is rare (titles, quotes); Crimson Pro carries every other serif moment. If both appear in one block, separate them clearly by size and weight.
 5. **Crimson Pro never becomes body text.** Headings and short section intros only. Anything paragraph-length is Jost.
+
+**Crimson Pro is retired from the public site** (26 Oct 2026): once the Dr. Harrington group titles moved to Jost, no public page used it, so it was dropped from those pages' Google Fonts request to save a download. Only `/admin/` still loads and uses it. **If a public page needs `.heading` again, add `family=Crimson+Pro:wght@500` back to that page's font link**, or the heading falls back to Georgia.
 
 ### Web-specific type rules
 - Line length for body copy: max ~68 characters (`--max-width-text: 680px`).
@@ -214,7 +216,7 @@ One shared component, used by both pages. A `.topic` is a titled group; its `.to
 - **Text a touch above body size** (20 Oct 2026, Lauren): the bio paragraphs and each list row run 18px (1.125rem); the taupe detail and year lines under them 16px (1rem).
 - **Group titles are Jost 500 in caps** (`text-transform`, +0.12em, 1.125rem), replacing Crimson Pro on 20 Oct 2026 (Lauren). Caps read larger than mixed case, hence the step down from `--text-heading-sm`.
 - **Same hover behaviour as the Expertise rows** (19 Oct 2026): hover intent, the open group held until another opens, the next group held under the cursor while the previous one folds shut over 0.75s. See *Disclosure lists* above.
-Native `<details>`/`<summary>` rows, closed by default: Crimson Pro heading on the left, a plus/minus icon on the right, hairline borders between groups. The list sits in the right two-thirds when open. The group opens in one frame — see §6 for why it is not animated — and hover opens it, since the list carries `data-hover-open`.
+Native `<details>`/`<summary>` rows, closed by default: Jost caps heading on the left (Crimson Pro until 20 Oct 2026), a plus/minus icon on the right, hairline borders between groups. The list sits in the right two-thirds when open. The group opens in one frame — see §6 for why it is not animated — and hover opens it, since the list carries `data-hover-open`.
 
 ### Parallax bands (modeled on editorialstockimages.com)
 Any section marked `data-parallax` holds a `[data-parallax-layer]` image that overhangs its frame by 12% top and bottom and slides at a fraction of the scroll rate, so the section reads as a window moving over a near-stationary photograph. Used on the home page's membership band and "Ready for a different type of care?".
@@ -271,10 +273,12 @@ The hero photograph is pulled to `object-position: left center` on this page onl
 
 The closing "On-site care" block is centred copy with no photograph — the portrait that stood there was a placeholder of Dr. Harrington carried over from an earlier layout.
 
-1. **Hormonal health** — Perimenopause · Menopause · Sexual function
-2. **Cancer survivorship & risk** — Cancer survivorship · Previvor surveillance
+1. **Hormone health** — Perimenopause · Menopause · Sexual function
+2. **Cancer survivorship and risk** — Cancer survivorship · Previvor surveillance
 3. **Gynecologic conditions** — Abnormal uterine bleeding · Pelvic pain · Vulvar conditions · Contraception
 4. **Procedures** — Endometrial biopsy · IUD insertion · Colposcopy & LEEP · Hysteroscopy
+
+**Every heading on Expertise and Q&A is in caps** (26 Oct 2026, Lauren) — the hero line, the group headings and the closing "Want to learn more?" — via `:is(.page-questions, .page-expertise) main .title` (scoped to `<main>` so the shared Get in touch / Subscribe panel keeps sentence case). In caps the Expertise hero line runs to three lines at 1280–1920px wide; the arm still clears it, but snugly at 1280 and 1440 — re-check the hero crop if the line or its size changes. Re-confirmed against Dr. Harrington's full text on 26 Oct 2026: group names updated as above, and **Endometrial biopsy** now reads *"An outpatient procedure to sample the lining of the uterus."* (it had been carrying the Hysteroscopy description by mistake).
 
 **Descriptions are Dr. Harrington's own words — quote them verbatim and don't paraphrase.** The first nine are hers as written. The four **Procedures** rows are cut from her single "Procedures" sentence and the IUD clause of "Contraception" — no new copy was written, but she has never described these four individually. See §10.
 
@@ -282,13 +286,13 @@ The closing "On-site care" block is centred copy with no photograph — the port
 - **Hero photograph is zoomed out** (20 Oct 2026, Lauren): above 900px `questions.jpg` (2400×1200) is fitted to the hero's width rather than filling its height, which had enlarged it ~1.3× on 2× laptop screens and made it look grainy. Its top and bottom edges fade into espresso with a mask. On phones it still fills the hero, so it is enlarged more there — a higher-resolution master would fix both.
 Replaced the Care Model page on 2026-09-30 (that page's markup is in git history at `care-model/index.html`). Full-screen image header, then three groups of native `<details>` accordions — **The practice**, **Care and treatment**, **Alongside your other care** — closed by default, same plus/minus fold as the credential groups.
 
-Eight questions, **Dr. Harrington's own answers, verbatim** (supplied 30 Sep 2026, revised 5 Oct 2026). The scaffold questions that stood here before were replaced wholesale; they are in git history if any are wanted back.
+Eight questions, **Dr. Harrington's own answers, verbatim** (supplied 30 Sep 2026, revised 5 Oct and again 26 Oct 2026, when *"Do you offer telehealth visits?"* was also added). The 26 Oct set added *"Do you do procedures?"*, rewrote *Where is your office?*, *How do I become a patient?* (now: subscribe, or send an inquiry if your concierge physician is not a partner) and the online-platforms answer, and dropped *"Do I need to already be in perimenopause or menopause…?"* and *"I already have a primary care doctor or gynecologist…?"* — both are in git history. Section headings (one heading each, no small label above, set in caps by CSS since 26 Oct 2026): **The Practice** (insurance, office, becoming a patient) · **Care and Treatment** (philosophy, scope, procedures) · **Coordinated Care** (online platforms, telehealth). The scaffold questions that stood here before were replaced wholesale; they are in git history if any are wanted back.
 
-**The answers are split between two voices.** Insurance, office, hormone philosophy and scope of care speak about her in the third person ("Dr. Harrington does not accept insurance"); keeping your own physician, online platforms, timing and becoming a patient speak as her ("see me", "I'm glad to coordinate"). That is how the copy was supplied, so it was left alone — see §10.
+**One voice now:** every answer speaks about Dr. Harrington in the third person. (The first-person answers — "see me", "I'm glad to coordinate" — went with the 26 Oct revision.)
 
 Every answer is also written into a `FAQPage` JSON-LD block in `<head>`, word for word. **Edit both or the schema goes stale.** Because the answers ship in the HTML whether folded or not, search engines and AI assistants read all of them — this is the site's main AEO asset.
 
-**Not published:** *"Can I schedule a virtual visit, or does every appointment need to be in person?"* came with no answer — the source note says the telehealth policy is undecided. A question with no answer, or a guessed one, is worse than a missing question on a medical site. See §10.
+**Telehealth:** answered 26 Oct 2026 — *"Do you offer telehealth visits?"* — "Yes, Dr. Harrington is happy to see you in person or on telehealth." (Previously held back while the policy was undecided.)
 
 ### Dr. Harrington
 Layout modeled on parsleyhealth.com/robin-berzin-md: large portrait beside the bio, then four foldable credential groups, **Education & Training**, **Memberships**, **Awards**, **Presentations** (years right-aligned), closed until hovered or clicked — the list carries `data-hover-open` (see §6). Presentations with several venues stack a `.credential-list__detail` line each and carry a year range in the right column.
@@ -466,7 +470,7 @@ Then open http://localhost:3000. Netlify Forms only work on the deployed site; l
 | Dev | Add privacy policy page if analytics or subscriber email are enabled |
 | Dev | **SEO/AEO:** build a page per area of expertise (`/expertise/perimenopause/` etc.), 600–900 words, with `MedicalProcedure` schema — highest-value item for both search and answer engines |
 | Lauren | Clinically review the per-offering page copy before it publishes — medical accuracy outranks keywords |
-| Dev | ~~Add FAQ sections with `FAQPage` schema~~ — done: `/questions/` ships ten Q&As with `FAQPage` JSON-LD. Still to add once written: referrals, what an MSCP is, hormone therapy after cancer |
+| Dev | ~~Add FAQ sections with `FAQPage` schema~~ — done: `/questions/` ships eight Q&As with `FAQPage` JSON-LD. Still to add once written: referrals, what an MSCP is, hormone therapy after cancer |
 | Dev | Extend `MedicalBusiness` schema (areaServed, medicalSpecialty, availableService); add `BreadcrumbList` and `dateModified` |
 | Lauren | Decide on local search: set up a Google Business Profile as a service-area business, or accept that local results aren't a channel (there's no public clinic address by design) |
 | Dev | Add `llms.txt` — a short plain-text summary of the practice for AI crawlers |
