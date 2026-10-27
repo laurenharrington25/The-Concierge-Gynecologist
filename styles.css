@@ -1344,7 +1344,7 @@ ul, ol { padding: 0; }
    because the serif's smaller x-height reads smaller at the same setting. */
 .quote-band__text {
   font-family: var(--font-title);
-  font-size: clamp(1.875rem, 3vw, 2.625rem); /* nudged up twice, 20 Oct 2026 */
+  font-size: clamp(2rem, 3.25vw, 2.875rem); /* nudged up 20 Oct 2026 (twice) and 26 Oct 2026 */
   line-height: 1.35;
   text-wrap: pretty;
 }
