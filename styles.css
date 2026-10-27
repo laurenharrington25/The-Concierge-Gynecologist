@@ -1223,14 +1223,6 @@ ul, ol { padding: 0; }
 .topic + .topic { margin-top: clamp(76px, 9vw, 124px); }
 .topic .eyebrow { margin-bottom: 18px; }
 .topic .title { text-wrap: balance; }
-/* Every heading on Q&A and Expertise in caps — hero, section and closing
-   headings (Lauren, 26 Oct 2026). Scoped to <main>, so the shared Get in
-   touch / Subscribe panel keeps its sentence case. From CSS, so the markup
-   stays sentence case and screen readers read words, not letters. Tracked a
-   little, as caps in a display serif set tight otherwise; the display-size
-   hero line gets less, since its size already opens it up. */
-:is(.page-questions, .page-expertise) main .title { text-transform: uppercase; letter-spacing: 0.04em; }
-:is(.page-questions, .page-expertise) main .title--display { letter-spacing: 0.02em; }
 .topic__list { margin-top: clamp(36px, 4vw, 52px); }
 
 .disclosure {
@@ -1265,6 +1257,7 @@ ul, ol { padding: 0; }
 .disclosure__body {
   max-width: var(--max-width-text);
   padding-bottom: 34px;
+  font-size: 1.125rem; /* 18px, a touch above body, like the bio — Lauren, 26 Oct 2026 */
 }
 .disclosure__body > * + * { margin-top: 1em; }
 
