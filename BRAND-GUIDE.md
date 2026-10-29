@@ -414,6 +414,11 @@ Every page has: a unique `<title>` ("Page — The Concierge Gynecologist"), a me
 - This is a medical practice. **Web forms are not HIPAA-secure channels.** Forms must never ask for symptoms, diagnoses, or health history, and must tell visitors not to include them.
 - No third-party trackers or analytics without Dr. Harrington's sign-off. **Google Analytics 4 (`G-NH5YB4F174`) was added with her sign-off on 21 Oct 2026**: the gtag snippet sits at the top of `<head>` on every public page, not on `/admin/`. It is not in a partial, so **a new page must have it pasted in by hand.** A privacy policy page is now owed (see open tasks).
 
+### Pre-launch password gate
+Added 29 Oct 2026 (Lauren): `netlify/edge-functions/preview-gate.js` runs in front of every page. **While `SITE_PASSWORD` is set in Netlify** (Site configuration → Environment variables, all scopes), visitors without a valid access cookie get a branded "Coming soon" page — ivory lockup on Dark Walnut, one password box — served `401` and `noindex`, so search engines see only that. **`SITE_PASSWORD` can hold several passwords separated by commas** (one per person or group); any of them signs you in for 30 days. Each cookie is an HMAC keyed by the password used, so it can't be forged, and **removing a password from the list signs out only the people who used it.** Signed-in pages are sent `private, no-store`.
+
+**To launch: delete `SITE_PASSWORD` and redeploy** — with it unset the gate steps aside entirely. Left open on purpose: `/unsubscribe/` and its `/styles.css` + `/script.js`, `/.netlify/functions/*` (forms, admin data, unsubscribe), `/images/logos/*` and `/favicon.svg`. Built on Edge Functions because Netlify's own site password needs a paid plan. The gate page's CSS is inline, with the brand hex values, so it never depends on the gated stylesheet.
+
 ### Local development
 ```bash
 npx serve .
