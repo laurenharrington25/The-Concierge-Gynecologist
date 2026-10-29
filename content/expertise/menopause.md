@@ -2,7 +2,8 @@
 title: Menopause
 group: Hormone health
 kind: MedicalCondition
-status: draft
+status: approved
+reviewed: 2026-10-29
 description: Personalized hormone therapy and non-hormonal medications to treat symptoms and help you feel like yourself through menopause and beyond.
 meta: Menopause care in Denver with Dr. Lauren Harrington, MD, MSCP: personalized hormone therapy and non-hormonal options for hot flashes, sleep, mood and more.
 related: perimenopause, sexual-function, cancer-survivorship

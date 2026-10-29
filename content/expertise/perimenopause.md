@@ -2,7 +2,8 @@
 title: Perimenopause
 group: Hormone health
 kind: MedicalCondition
-status: draft
+status: approved
+reviewed: 2026-10-29
 description: Evidence-based tools to manage the hormonal disruptions, mood changes, sleep alterations, cycle variations and sexual function changes that mark the transition toward menopause.
 meta: Perimenopause care in Denver with Dr. Lauren Harrington, MD, MSCP: evidence-based treatment for cycle changes, hot flashes, sleep, mood and sexual health.
 related: menopause, sexual-function, abnormal-uterine-bleeding
