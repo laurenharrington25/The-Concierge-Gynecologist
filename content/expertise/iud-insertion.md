@@ -2,7 +2,7 @@
 title: IUD insertion
 group: Procedures
 kind: MedicalProcedure
-status: draft
+status: approved
 description: IUD insertion and removal with advanced pain control options.
 meta: IUD insertion and removal in Denver with Dr. Lauren Harrington, MD, with advanced pain control options and time to talk through every step.
 related: contraception, abnormal-uterine-bleeding, perimenopause

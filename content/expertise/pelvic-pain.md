@@ -2,7 +2,7 @@
 title: Pelvic pain
 group: Gynecologic conditions
 kind: MedicalCondition
-status: draft
+status: approved
 description: Thorough evaluation and multimodal treatment of acute and chronic pelvic pain.
 meta: Evaluation and multimodal treatment of acute and chronic pelvic pain in Denver with Dr. Lauren Harrington, MD: an unhurried, thorough and coordinated approach.
 related: sexual-function, vulvar-conditions, abnormal-uterine-bleeding

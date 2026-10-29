@@ -2,7 +2,7 @@
 title: Vulvar conditions
 group: Gynecologic conditions
 kind: MedicalCondition
-status: draft
+status: approved
 description: Thoughtful evaluation and treatment of vulvar skin conditions, irritation, and pain.
 meta: Diagnosis and treatment of vulvar itching, irritation, skin conditions and vulvar pain in Denver with Dr. Lauren Harrington, MD, including in-office vulvar biopsy.
 related: sexual-function, pelvic-pain, menopause

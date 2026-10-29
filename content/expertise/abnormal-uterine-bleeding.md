@@ -2,7 +2,7 @@
 title: Abnormal uterine bleeding
 group: Gynecologic conditions
 kind: MedicalCondition
-status: draft
+status: approved
 description: Thorough evaluation of irregular, heavy, or unexpected bleeding to identify the cause, mitigate the symptoms, and obtain the best treatment.
 meta: Evaluation and treatment of heavy, irregular or postmenopausal bleeding in Denver with Dr. Lauren Harrington, MD, including in-office endometrial biopsy and hysteroscopy.
 related: perimenopause, endometrial-biopsy, hysteroscopy, menopause

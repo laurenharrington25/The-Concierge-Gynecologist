@@ -2,7 +2,7 @@
 title: Previvor surveillance
 group: Cancer survivorship and risk
 kind: MedicalCondition
-status: draft
+status: approved
 description: Ongoing gynecologic surveillance and risk-reducing guidance for women with a hereditary predisposition to cancer.
 meta: Previvor care in Denver with Dr. Lauren Harrington, MD: gynecologic surveillance and risk-reducing guidance for women with BRCA and other hereditary cancer risks.
 related: cancer-survivorship, menopause, perimenopause

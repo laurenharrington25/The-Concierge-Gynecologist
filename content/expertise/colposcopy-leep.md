@@ -2,7 +2,7 @@
 title: Colposcopy & LEEP
 group: Procedures
 kind: MedicalProcedure
-status: draft
+status: approved
 description: For evaluation and treatment of abnormal cervical cells.
 meta: Colposcopy and LEEP in Denver with Dr. Lauren Harrington, MD: evaluation and treatment of abnormal pap smears and abnormal cervical cells, explained clearly.
 related: abnormal-uterine-bleeding, previvor-surveillance

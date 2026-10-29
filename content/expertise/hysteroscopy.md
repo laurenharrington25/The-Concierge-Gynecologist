@@ -2,7 +2,7 @@
 title: Hysteroscopy
 group: Procedures
 kind: MedicalProcedure
-status: draft
+status: approved
 description: A minimally invasive procedure to evaluate and treat conditions inside the uterus, such as polyps or abnormal bleeding.
 meta: Hysteroscopy and D&C in Denver with Dr. Lauren Harrington, MD: minimally invasive evaluation and treatment of polyps and abnormal bleeding inside the uterus.
 related: abnormal-uterine-bleeding, endometrial-biopsy

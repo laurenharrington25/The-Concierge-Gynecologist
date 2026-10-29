@@ -2,7 +2,7 @@
 title: Sexual function
 group: Hormone health
 kind: MedicalCondition
-status: draft
+status: approved
 description: Expert, sensitive and effective care for changes in desire, comfort, orgasm and sexual function at any life stage.
 meta: Sexual health care in Denver with Dr. Lauren Harrington, MD: expert, sensitive treatment for changes in desire, pain with sex, arousal and orgasm.
 related: menopause, perimenopause, vulvar-conditions, cancer-survivorship

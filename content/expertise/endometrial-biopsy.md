@@ -2,7 +2,7 @@
 title: Endometrial biopsy
 group: Procedures
 kind: MedicalProcedure
-status: draft
+status: approved
 description: An outpatient procedure to sample the lining of the uterus.
 meta: Endometrial biopsy in Denver with Dr. Lauren Harrington, MD: a quick outpatient procedure to evaluate abnormal or postmenopausal bleeding, with attention to your comfort.
 related: abnormal-uterine-bleeding, hysteroscopy, menopause

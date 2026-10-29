@@ -2,7 +2,7 @@
 title: Cancer survivorship
 group: Cancer survivorship and risk
 kind: MedicalCondition
-status: draft
+status: approved
 description: Specialized care addressing the gynecologic and hormonal effects of cancer treatment, helping women thrive after treatment.
 meta: Gynecologic care for cancer survivors in Denver with Dr. Lauren Harrington, MD, MSCP: treatment-related menopause, vaginal and sexual health, coordinated with your oncology team.
 related: previvor-surveillance, menopause, sexual-function

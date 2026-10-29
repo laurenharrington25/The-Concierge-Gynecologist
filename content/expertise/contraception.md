@@ -2,7 +2,7 @@
 title: Contraception
 group: Gynecologic conditions
 kind: MedicalCondition
-status: draft
+status: approved
 description: Personalized counseling for contraceptives, including Nexplanon and IUD insertion and removal with advanced pain control options.
 meta: Personalized birth control counseling in Denver with Dr. Lauren Harrington, MD, including IUD and Nexplanon insertion and removal with advanced pain control options.
 related: iud-insertion, perimenopause, abnormal-uterine-bleeding
