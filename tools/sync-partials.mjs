@@ -27,7 +27,10 @@ import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// Partials live at the repo root; the pages they go into live in site/,
+// the only folder Netlify publishes.
+const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const ROOT = join(REPO, 'site');
 const PARTIALS = ['header', 'footer', 'inquire-panel'];
 const SKIP_DIRS = new Set(['.git', '.claude', '.netlify', 'node_modules', 'partials', 'tools', 'netlify', 'images', 'videos']);
 
@@ -40,7 +43,7 @@ function findPages(dir) {
 }
 
 const partials = Object.fromEntries(
-  PARTIALS.map((name) => [name, readFileSync(join(ROOT, 'partials', `${name}.html`), 'utf8').trim()]),
+  PARTIALS.map((name) => [name, readFileSync(join(REPO, 'partials', `${name}.html`), 'utf8').trim()]),
 );
 
 let updated = 0;

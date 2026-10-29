@@ -4,9 +4,15 @@
 # Plain static site — no build step. Every page is a real file in its own
 # folder (/expertise/index.html, /questions/index.html, ...), so no SPA
 # fallback redirect is needed. Unknown URLs get /404.html.
+#
+# Only site/ is published. Everything else in the repo — BRAND-GUIDE.md,
+# docs/, README, partials/, tools/, function source — is working material
+# and must never be reachable on the web (moved here 29 Oct 2026, after
+# /BRAND-GUIDE.md and /docs/LAUNCH-GUIDE.md were found to be public).
+# Header paths below are relative to site/.
 
 [build]
-  publish = "."
+  publish = "site"
 
 [functions]
   directory = "netlify/functions"

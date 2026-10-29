@@ -3,7 +3,7 @@
 // starting at `start` from the 4K master, scale to 1920 wide at 25 fps, drop
 // audio, H.264 with fast start — then writes the first frame as the poster.
 //
-//   swift tools/encode-hero-clip.swift <master.mp4> <out.mp4> <poster.jpg> <start> [duration=2.8] [bitrate=1100000]
+//   swift tools/encode-hero-clip.swift <master.mp4> site/videos/hero-<n>.mp4 site/images/hero/hero-<n>.jpg <start> [duration=2.8] [bitrate=1100000]
 //
 // ~1.1 Mb/s lands a 2.8s clip at roughly 400KB, in line with the others.
 import AVFoundation

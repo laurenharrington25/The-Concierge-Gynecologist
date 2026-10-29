@@ -7,7 +7,7 @@ Website for Dr. Lauren Harrington, MD: boutique gynecology care delivered on-sit
 ## Run locally
 
 ```bash
-npx serve .
+npx serve site
 ```
 
 Open http://localhost:3000.
@@ -22,4 +22,6 @@ node tools/sync-partials.mjs
 
 ## Deploy
 
-Static site on Netlify, publish directory `.`, no build command. Pushing to `main` deploys.
+Static site on Netlify, publish directory **`site/`**, no build command. Pushing to `main` deploys.
+
+**Only `site/` is public.** Put pages, CSS/JS, images and videos there. Everything at the repo root — this README, `BRAND-GUIDE.md`, `docs/`, `partials/`, `tools/`, `netlify/` — is working material and is never published.

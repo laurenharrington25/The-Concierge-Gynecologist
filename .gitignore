@@ -6,9 +6,9 @@ node_modules/
 .vscode/
 .netlify/
 ~$*.docx
-# Working documents stay out of the repo — Netlify publishes the repo root
+# Working documents stay out of the repo
 *.docx
 # Full-resolution source footage and photography; only the cropped, compressed
 # derivatives (videos/hero-*.mp4, images/<section>/*.jpg) ship
-videos/originals/
-images/originals/
+site/videos/originals/
+site/images/originals/

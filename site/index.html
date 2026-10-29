@@ -39,15 +39,24 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
+    "@type": "Physician",
+    "@id": "https://theconciergegynecologist.com/#practice",
     "name": "The Concierge Gynecologist",
     "url": "https://theconciergegynecologist.com/",
     "email": "contact@theconciergegynecologist.com",
     "description": "Boutique gynecology care for women in hormonal transitions, delivered on-site at partnering concierge primary care practices across the Denver metro area.",
     "image": "https://theconciergegynecologist.com/images/team/dr-lauren-harrington.jpg",
-    "medicalSpecialty": "Gynecologic",
-    "areaServed": { "@type": "AdministrativeArea", "name": "Denver metropolitan area, Colorado" },
-    "founder": { "@type": "Person", "name": "Lauren Harrington, MD", "url": "https://theconciergegynecologist.com/dr-harrington/" },
+    "medicalSpecialty": "https://schema.org/Gynecologic",
+    "areaServed": {
+      "@type": "AdministrativeArea",
+      "name": "Denver metropolitan area, Colorado"
+    },
+    "founder": {
+      "@type": "Person",
+      "@id": "https://theconciergegynecologist.com/dr-harrington/#lauren-harrington",
+      "name": "Lauren Harrington, MD",
+      "url": "https://theconciergegynecologist.com/dr-harrington/"
+    },
     "sameAs": [
       "https://www.instagram.com/theconciergegynecologist",
       "https://www.linkedin.com/in/drlaurenharrington/"

@@ -4,7 +4,7 @@
     {
       "name": "Concierge Gynecologist Website",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "."],
+      "runtimeArgs": ["serve", "site"],
       "port": 3000,
       "autoPort": true
     }

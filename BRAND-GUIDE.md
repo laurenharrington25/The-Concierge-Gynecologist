@@ -139,7 +139,7 @@ Same-week appointments, direct access…       ← body (Jost)
 - **Subjects:** real women in their 40s–60s living active, grounded lives (walking, hiking, swimming, laughing with friends), plus Dr. Harrington in a calm office setting.
 - **Look:** natural light, warm neutrals that sit inside the palette, soft contrast, candid rather than posed. Nothing sterile, no exam tables, no stethoscope close-ups, no stock "doctor pointing at clipboard."
 - **Home hero video:** nine short clips, **2 seconds each** on screen (encoded at 2.8s so the cross-dissolve always has moving footage on both sides). All nine are 2.8s and loop; hero-4 (runner, `365564_Fence_Curly_Hair…`) and hero-10 (hikers, `412980_Man_Mountain_Rocks_Trail…`) were re-cut at 2.8s from their 4K masters on 21 Oct 2026, both from 3.0s in, and published as **`hero-4-v2` / `hero-10-v2`** (files and posters): `/videos/*` and `/images/*` are cached as immutable for a year, so a changed clip must get a new file name or returning visitors keep the old one, crossfading. Muted, `playsinline`, no controls. Each clip ≤ 3MB, 1920px wide, H.264 MP4 (plus an optional WebM), with a still `poster` image. Keep the clip length and the rotator's `data-interval` in `index.html` in step.
-- **Video workflow:** drop full-resolution source files in `videos/originals/` (git-ignored, never deployed). Encode each as the next `videos/hero-<n>.mp4` with a poster frame, then add a slide in `index.html`:
+- **Video workflow:** drop full-resolution source files in `site/videos/originals/` (git-ignored, never deployed). Encode each as the next `videos/hero-<n>.mp4` with a poster frame, then add a slide in `index.html`:
   ```bash
   ffmpeg -ss 2 -i videos/originals/SOURCE.mp4 -t 2 -an -vf "scale=1920:-2,fps=25" -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -movflags +faststart videos/hero-2.mp4
   ffmpeg -i videos/hero-2.mp4 -frames:v 1 -q:v 4 images/hero/hero-2.jpg
@@ -353,29 +353,25 @@ Standalone versions of the panel's two forms, for direct links and no-JS visitor
 - **Newsletters** are composed and sent in **Resend → Broadcasts** (with its own test send), not from this codebase. Put `{{{RESEND_UNSUBSCRIBE_URL}}}` in each broadcast; it updates the same contacts the site's unsubscribe does.
 
 ### File structure
+**Only `site/` is published** (`publish = "site"` in `netlify.toml`, since 29 Oct 2026). Before that Netlify published the repo root, and this guide and `docs/LAUNCH-GUIDE.md` were readable at public URLs — a map of the site and its plans that search engines and AI models could pick up. **Nothing that isn't meant for visitors goes in `site/`.** Paths elsewhere in this guide such as `images/sections/…` or `videos/hero-…` are inside `site/`.
 ```
 /
-├── index.html              Home
-├── expertise/index.html
-├── questions/index.html
-├── dr-harrington/index.html
-├── in-their-words/index.html
-├── inquire/index.html
-├── 404.html
+├── site/                   ← the website; the only folder Netlify publishes
+│   ├── index.html          Home
+│   ├── expertise/  questions/  dr-harrington/  in-their-words/
+│   ├── inquire/  stay-in-touch/  unsubscribe/  admin/
+│   ├── 404.html
+│   ├── styles.css          All styles; tokens at the top
+│   ├── script.js           All behavior
+│   ├── images/             team/, hero/, sections/, logos/, …  (originals/ git-ignored)
+│   ├── videos/             hero clips  (originals/ git-ignored)
+│   ├── favicon.svg  robots.txt  sitemap.xml
 ├── partials/               Shared header, footer, Inquire panel (source of truth)
-│   ├── header.html
-│   ├── footer.html
-│   └── inquire-panel.html
-├── tools/
-│   └── sync-partials.mjs   Copies partials into every page
-├── styles.css              All styles; tokens at the top
-├── script.js               All behavior
-├── images/                 team/, offerings/, …
-├── videos/                 hero clips
-├── favicon.svg
-├── netlify.toml            Hosting, caching, security headers
-├── robots.txt
-├── sitemap.xml
+├── tools/                  sync-partials.mjs, encode-hero-clip.swift, create-welcome-template.mjs
+├── netlify/functions/      Server code (admin data, welcome email, unsubscribe)
+├── netlify.toml            Hosting, publish dir, caching, security headers
+├── docs/                   LAUNCH-GUIDE.md and other working documents
+├── README.md  CLAUDE.md
 └── BRAND-GUIDE.md          This document
 ```
 
@@ -387,7 +383,7 @@ node tools/sync-partials.mjs
 This rewrites the content between `<!-- partial:name -->` … `<!-- /partial:name -->` markers in every page and sets `aria-current="page"` on the right nav link. Commit the partials and the updated pages together.
 
 ### Adding a page
-1. Create `new-page/index.html` by copying an existing inner page (keeps the full `<head>` and partial markers).
+1. Create `site/new-page/index.html` by copying an existing inner page (keeps the full `<head>` and partial markers).
 2. Update `<title>`, meta description, canonical URL, and Open Graph tags.
 3. Add the link to `partials/header.html` and `partials/footer.html`, then run the sync script.
 4. Add the URL to `sitemap.xml`.
@@ -399,6 +395,8 @@ This rewrites the content between `<!-- partial:name -->` … `<!-- /partial:nam
 
 ### SEO
 Every page has: a unique `<title>` ("Page — The Concierge Gynecologist"), a meta description (140–160 chars), a canonical URL, Open Graph + Twitter tags, and an entry in `sitemap.xml`. Home carries `MedicalBusiness` JSON-LD; the Dr. Harrington page carries `Physician`/`Person` JSON-LD with credentials.
+
+**Structured data, revised 29 Oct 2026:** the home page's JSON-LD is now **`Physician`** (a `MedicalBusiness` subtype, so the business properties carry over and `medicalSpecialty` — written as the enumeration URL `https://schema.org/Gynecologic` — is used as intended), with `@id` `https://theconciergegynecologist.com/#practice`. The Dr. Harrington `Person` has `@id` `…/dr-harrington/#lauren-harrington`; the practice's `founder` and the person's `worksFor` point at each other by `@id`, so models join them rather than guess. **Both carry `sameAs`** — LinkedIn and Instagram today. Add any medical profile (Doximity, Healthgrades, a hospital or university page, the NPI registry) to the `Person`'s `sameAs` once its URL is confirmed — never a guessed one.
 
 ### Accessibility (WCAG 2.2 AA)
 - Color pairs in §2 are pre-checked; don't introduce new ones without checking contrast.
